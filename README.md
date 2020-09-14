@@ -18,5 +18,10 @@ Así que... si te descargas el código y ves que es una patata... no es todo cul
 <br>
 Acabo de ver un aviso de que ya está lista para la descarga la versión 16.8.0 Preview 3.0<br>
 La descargo y te cuento.<br>
+Sigue <i>casi igual</i>, ya que aunque ahora define los controles con WithEvents, al hacer doble-clic en ellos, crea el método de evento predeterminado (Click para el control Button, Load para el formulario) pero no añade el Handle y por tanto no está ligado con el copntrol.<br>
+Ni siquiera crea el método de evento asociado si eliges el evento desde la ventana de propiedades.<br>
+Y si haces nuevamente doble-clic, te vuelve a crear otro método de evento con otro nombre, al estilo de Button2_Click_1<br>
+Esto lo he com probado usando .NET 5.0 preview como para .NET Core 3.1<br>
+En fin... habrá que seguir esperando...<br>
 <br>
 <br>
