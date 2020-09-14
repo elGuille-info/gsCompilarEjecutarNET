@@ -25,3 +25,13 @@ Esto lo he com probado usando .NET 5.0 preview como para .NET Core 3.1<br>
 En fin... habrá que seguir esperando...<br>
 <br>
 <br>
+Por si decido quitar las referencias a los proyectos y usar las DLL compiladas de las dos bibliotecas usadas en la utilidad, aquí te dejo los enlaces a los paquetes NuGet por si decides descargarlos y usarlos con Visual Studio 2019 preview:<br>
+gsColorearNET: https://www.nuget.org/packages/gsColorearNET/<br>
+gsCompilarNET: https://www.nuget.org/packages/gsCompilarNET/<br>
+<br>
+<br>
+Guillermo<br>
+<br>
+Actualizado el 14 de septiembre de 2020 a las 21:56 GMT+2<br>
+
+
