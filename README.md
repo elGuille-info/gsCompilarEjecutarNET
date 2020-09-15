@@ -36,7 +36,7 @@ Actualizado el 15 de septiembre de 2020 a las 21:23 GMT+2<br>
 <br>
 <br>
 <h2>Revisiones</h2>
-v1.0.0.6 15/Sept/2020:<br>
+v1.0.0.6 del 15/Sept/2020:<br>
 El formulario principal muestra las líneas de código y se sincroniza con el código<br>
 Modifico el AcercaDe mostrando la versión de la utilidad.<br>
 <br>
