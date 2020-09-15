@@ -1,4 +1,17 @@
-﻿Public Class OpcionesForm
+﻿'------------------------------------------------------------------------------
+' Opciones de la aplicación de compilar y ejecutar
+'
+'
+' (c) Guillermo (elGuille) Som, 2020
+'------------------------------------------------------------------------------
+Option Strict On
+Option Infer On
+
+Imports Microsoft.VisualBasic
+Imports System
+Imports System.Collections.Generic
+
+Public Class OpcionesForm
 
     Public CargarUltimo As Boolean
     Public ColorearAlCargar As Boolean
@@ -50,7 +63,10 @@
                                          ColFics.Sort()
                                          AsignarItems()
                                      End Sub
-        AddHandler lstFics.SelectedIndexChanged, Sub() txtFic.Text = If(lstFics.SelectedItem Is Nothing, txtFic.Text, lstFics.SelectedItem.ToString)
+        AddHandler lstFics.SelectedIndexChanged, Sub() txtFic.Text = If(lstFics.SelectedItem Is Nothing,
+                                                                            txtFic.Text,
+                                                                            lstFics.SelectedItem.ToString
+                                                                        )
 
     End Sub
 

@@ -70,6 +70,7 @@ Partial Class Form1
         Me.LabelFuente = New System.Windows.Forms.ToolStripStatusLabel()
         Me.LabelLenguaje = New System.Windows.Forms.ToolStripStatusLabel()
         Me.LabelPos = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.txtFilas = New System.Windows.Forms.RichTextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.StatusContextMenu.SuspendLayout()
@@ -318,9 +319,9 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.rtbCodigo.DetectUrls = False
         Me.rtbCodigo.Font = New System.Drawing.Font("Consolas", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.rtbCodigo.Location = New System.Drawing.Point(12, 27)
+        Me.rtbCodigo.Location = New System.Drawing.Point(43, 27)
         Me.rtbCodigo.Name = "rtbCodigo"
-        Me.rtbCodigo.Size = New System.Drawing.Size(776, 396)
+        Me.rtbCodigo.Size = New System.Drawing.Size(745, 396)
         Me.rtbCodigo.TabIndex = 1
         Me.rtbCodigo.Text = ""
         '
@@ -403,11 +404,29 @@ Partial Class Form1
         Me.LabelPos.Size = New System.Drawing.Size(93, 19)
         Me.LabelPos.Text = "Lín: 399  Car: 20"
         '
+        'txtFilas
+        '
+        Me.txtFilas.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtFilas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilas.CausesValidation = False
+        Me.txtFilas.Font = New System.Drawing.Font("Consolas", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.txtFilas.Location = New System.Drawing.Point(3, 27)
+        Me.txtFilas.Name = "txtFilas"
+        Me.txtFilas.ReadOnly = True
+        Me.txtFilas.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None
+        Me.txtFilas.ShortcutsEnabled = False
+        Me.txtFilas.Size = New System.Drawing.Size(39, 396)
+        Me.txtFilas.TabIndex = 3
+        Me.txtFilas.TabStop = False
+        Me.txtFilas.Text = "1" & Global.Microsoft.VisualBasic.ChrW(13) & "2" & Global.Microsoft.VisualBasic.ChrW(13) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & "13" & Global.Microsoft.VisualBasic.ChrW(13) & "14" & Global.Microsoft.VisualBasic.ChrW(13) & "15" & Global.Microsoft.VisualBasic.ChrW(13) & "99" & Global.Microsoft.VisualBasic.ChrW(13) & "100" & Global.Microsoft.VisualBasic.ChrW(13) & "101"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.txtFilas)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.rtbCodigo)
         Me.Controls.Add(Me.MenuStrip1)
@@ -473,4 +492,5 @@ Partial Class Form1
     Private cboFuenteTamaño As ToolStripComboBox
     Private FuenteAceptarMenu As ToolStripMenuItem
     Private LabelFuente As ToolStripStatusLabel
+    Private txtFilas As RichTextBox
 End Class

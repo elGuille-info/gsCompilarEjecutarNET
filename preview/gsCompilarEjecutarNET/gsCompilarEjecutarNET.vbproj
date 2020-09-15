@@ -9,12 +9,12 @@
 
     <Version>1.0.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
+    <FileVersion>1.0.0.6</FileVersion>
     <Authors>Guillermo Som (Guille)</Authors>
     <Company>elGuille</Company>
     <Description>Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la aplicación.
 Tanto para aplicaciones de consola como de Windows Forms.
-(revisión del 14/Sep/2020)</Description>
+(para .NET 5.0 revisión del 15/Sep/2020)</Description>
     <Copyright>Copyright © Guillermo Som (Guille), 2020</Copyright>
     <ApplicationIcon>VSProject_genericproject.Office_Deve.ico</ApplicationIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
