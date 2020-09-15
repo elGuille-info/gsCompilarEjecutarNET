@@ -3,6 +3,12 @@ Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la ap
 Tanto para aplicaciones de consola como de Windows Forms.<br>
 <br>
 <br>
+<h2>Revisiones</h2>
+v1.0.0.6 15/Sept/2020:<br>
+El formulario principal muestra las líneas de código y se sincroniza con el código<br>
+Modifico el AcercaDe mostrando la versión de la utilidad.<br>
+<br>
+<br>
 En la carpeta <b>preview</b> está el código fuente y el proyecto para Visual Basic, también habrá copias de los otros dos proyectos que utiliza esta utilidad:<br>
 gsColorearNET y gsCompilarNET.<br>
 Aunque te recomiendo que te descargues el código de esas dos de los repositorios que tengo en gitHub:<br>
