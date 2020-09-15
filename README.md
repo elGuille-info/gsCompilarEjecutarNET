@@ -38,6 +38,6 @@ gsCompilarNET: https://www.nuget.org/packages/gsCompilarNET/<br>
 <br>
 Guillermo<br>
 <br>
-Actualizado el 14 de septiembre de 2020 a las 21:56 GMT+2<br>
+Actualizado el 15 de septiembre de 2020 a las 21:23 GMT+2<br>
 
 
