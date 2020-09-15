@@ -1,11 +1,12 @@
 ﻿'------------------------------------------------------------------------------
-' Compilar NETCore WinF                                             (08/Sep/20)
+' gsCompilarEjecutarNET                                             (08/Sep/20)
 ' Utilidad para colorear, compilar y ejecutar código de VB o C#
 '
-' Esta aplicación utiliza estas dos DLL compiladas para .NET core 3.1
-' (en espera que salga la versión final de .NET 5.0)
-' ColorearCore  (código de VB)
-' CompilarCore (código de C#)
+' Como aplicación para Windows Forms para .NET 5.0 Preview
+'
+' Esta aplicación utiliza estas dos DLL compiladas para .NET Standard y .NET Core 3.1
+' gsColorearNET .NET Standard 2.0
+' gsCompilarNET .NET Core 3.1
 '
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
@@ -17,15 +18,53 @@ Imports Microsoft.VisualBasic
 Imports System.IO
 Imports System.Text
 
-Imports vbc = Microsoft.CodeAnalysis.VisualBasic
+'Imports vbc = Microsoft.CodeAnalysis.VisualBasic
 
 ' La clase Colorear
-Imports gsCol = gsColorearNET.Colorear ' gsColorearCore.Colorear 'elGuille.Util.Developer.Colorear
-' El espacio de nombres Developer (tiene la definición de Lenguajes)
-Imports gsDev = gsColorearNET ' gsColorearCore ' elGuille.Util.Developer
-Imports gsCompilarNET 'Core
+Imports gsCol = gsColorearNET.Colorear
+' El espacio de nombres que tiene la definición de Lenguajes
+Imports gsDev = gsColorearNET
+' La clase de Compilar
+Imports gsCompilarNET
 
 Public Class Form1
+
+#Region " Para sincronizar los scrollbar de los richtextbox (15/Sep/20) "
+
+    ' Adaptado de un ejemplo para C# de este foro:
+    ' https://social.msdn.microsoft.com/Forums/windows/en-US/161d1636-aea3-4fee-beb4-52370663d44c/
+    ' synchronize-scrolling-in-2-richtextboxes-in-c?forum=winforms
+    Public Enum ScrollBarType As Integer
+        SbHorz = 0
+        SbVert = 1
+        SbCtl = 2
+        SbBoth = 3
+    End Enum
+
+    Public Enum Message As Long
+        WM_VSCROLL = &H115
+    End Enum
+
+    Public Enum ScrollBarCommands As Long
+        SB_THUMBPOSITION = 4
+    End Enum
+
+    <System.Runtime.InteropServices.DllImport("User32.dll")>
+    Public Shared Function GetScrollPos(hWnd As IntPtr, nBar As Integer) As Integer
+    End Function
+
+    <System.Runtime.InteropServices.DllImport("User32.dll")>
+    Public Shared Function SendMessage(hWnd As IntPtr, msg As Long, wParam As Long, lParam As Long) As Integer
+    End Function
+
+    Private Sub RichTextBox_VScroll(sender As Object, e As EventArgs)
+        Dim nPos As Integer = GetScrollPos(rtbCodigo.Handle, ScrollBarType.SbVert)
+        nPos <<= 16
+        Dim wParam As Long = ScrollBarCommands.SB_THUMBPOSITION Or nPos
+        SendMessage(txtFilas.Handle, Message.WM_VSCROLL, wParam, 0)
+    End Sub
+
+#End Region
 
     Private fuenteNombre As String = gsCol.FuentePre
     Private fuenteTamaño As String = gsCol.FuenteTamPre
@@ -103,92 +142,113 @@ Public Class Form1
         AddHandler ColorearMenu.Click, Sub() ColorearCodigo()
         AddHandler NoColorearMenu.Click, Sub() NoColorear()
 
+        AddHandler rtbCodigo.VScroll, AddressOf RichTextBox_VScroll
+        AddHandler rtbCodigo.FontChanged,
+                    Sub()
+                        txtFilas.Font = New Font(rtbCodigo.Font.FontFamily, rtbCodigo.Font.Size)
+                    End Sub
         AddHandler rtbCodigo.KeyDown, AddressOf rtbCodigo_KeyDown
         AddHandler rtbCodigo.SelectionChanged, AddressOf rtbCodigo_SelectionChanged
         AddHandler rtbCodigo.Leave, AddressOf rtbCodigo_Leave
-        AddHandler rtbCodigo.TextChanged, Sub()
-                                              codigoNuevo = rtbCodigo.Text
-                                              If codigoNuevo = "" Then Return
-                                              If codigoAnt = "" Then Return
-                                              TextoModificado = (codigoAnt.Replace(Microsoft.VisualBasic.Constants.vbCr, "").Replace(Microsoft.VisualBasic.Constants.vbLf, "") <> codigoNuevo.Replace(Microsoft.VisualBasic.Constants.vbLf, ""))
-                                              'TextoModificado = (codigoAnt.Replace(Microsoft.VisualBasic.Constants.vbCr, "") <> codigoNuevo)
-                                          End Sub
+        AddHandler rtbCodigo.TextChanged,
+                    Sub()
+                        codigoNuevo = rtbCodigo.Text
+                        If codigoNuevo = "" Then Return
+                        If codigoAnt = "" Then Return
+                        ' Añadir los números de línea               (15/Sep/20)
+                        Dim lin = codigoNuevo.Split(vbCr).Length
+                        txtFilas.Text = ""
+                        For i = 1 To lin
+                            txtFilas.Text &= i.ToString("0").PadLeft(4) & vbCrLf
+                        Next
+                        ' Sincronizar los scrolls
+                        RichTextBox_VScroll(Nothing, Nothing)
+                        TextoModificado = (codigoAnt.Replace(vbCr, "").Replace(vbLf, "") <> codigoNuevo.Replace(vbLf, ""))
+                    End Sub
 
         AddHandler cboLenguajes.TextChanged, Sub() LabelLenguaje.Text = cboLenguajes.Text
 
         AddHandler UndoMenu.Click, Sub() If rtbCodigo.CanUndo Then rtbCodigo.Undo()
         AddHandler RedoMenu.Click, Sub() If rtbCodigo.CanRedo Then rtbCodigo.Redo()
-        AddHandler PasteMenu.Click, Sub()
-                                        If rtbCodigo.CanPaste(DataFormats.GetFormat("Text")) Then
-                                            rtbCodigo.Paste(DataFormats.GetFormat("Text"))
-                                        End If
-                                    End Sub
+        AddHandler PasteMenu.Click,
+                    Sub()
+                        If rtbCodigo.CanPaste(DataFormats.GetFormat("Text")) Then
+                            rtbCodigo.Paste(DataFormats.GetFormat("Text"))
+                        End If
+                    End Sub
         AddHandler CopyMenu.Click, Sub() rtbCodigo.Copy()
         AddHandler CutMenu.Click, Sub() rtbCodigo.Cut()
         AddHandler SelectAllMenu.Click, Sub() rtbCodigo.SelectAll()
-        AddHandler EditMenu.DropDownOpening, Sub()
-                                                 UndoMenu.Enabled = rtbCodigo.CanUndo
-                                                 RedoMenu.Enabled = rtbCodigo.CanRedo
-                                                 CopyMenu.Enabled = rtbCodigo.SelectionLength > 0
-                                                 CutMenu.Enabled = CopyMenu.Enabled
-                                                 PasteMenu.Enabled = rtbCodigo.CanPaste(DataFormats.GetFormat("Text"))
-                                             End Sub
+        AddHandler EditMenu.DropDownOpening,
+                    Sub()
+                        UndoMenu.Enabled = rtbCodigo.CanUndo
+                        RedoMenu.Enabled = rtbCodigo.CanRedo
+                        CopyMenu.Enabled = rtbCodigo.SelectionLength > 0
+                        CutMenu.Enabled = CopyMenu.Enabled
+                        PasteMenu.Enabled = rtbCodigo.CanPaste(DataFormats.GetFormat("Text"))
+                    End Sub
         AddHandler CompilarMenu.Click, Sub() CompilarEjecutar()
-        AddHandler RecientesMenu.DropDownOpening, Sub()
-                                                      For i = 0 To RecientesMenu.DropDownItems.Count - 1
-                                                          If RecientesMenu.DropDownItems(i).Text.IndexOf(ultimoFic) > 3 Then
-                                                              RecientesMenu.DropDownItems(i).Select()
-                                                              TryCast(RecientesMenu.DropDownItems(i), ToolStripMenuItem).Checked = True
-                                                          End If
-                                                      Next
-                                                  End Sub
-        AddHandler OpcionesMenu.Click, Sub()
-                                           ' Mostrar la ventana de opciones
-                                           Dim opFrm As New OpcionesForm(colFics)
-                                           With opFrm
-                                               .CargarUltimo = cargarUltimo
-                                               .ColorearAlCargar = colorearAlCargar
-                                               If .ShowDialog() = DialogResult.OK Then
-                                                   colorearAlCargar = .ColorearAlCargar
-                                                   cargarUltimo = .CargarUltimo
-                                                   colFics.Clear()
-                                                   colFics.AddRange(.ColFics)
-                                                   AsignarRecientes()
-                                                   GuardarConfig()
-                                               End If
-                                           End With
-                                       End Sub
-        AddHandler CopiarPathMenu.Click, Sub()
-                                             Try
-                                                 Clipboard.SetText(ultimoFic)
-                                             Catch ex As Exception
-                                             End Try
-                                         End Sub
+        AddHandler RecientesMenu.DropDownOpening,
+                    Sub()
+                        For i = 0 To RecientesMenu.DropDownItems.Count - 1
+                            If RecientesMenu.DropDownItems(i).Text.IndexOf(ultimoFic) > 3 Then
+                                RecientesMenu.DropDownItems(i).Select()
+                                TryCast(RecientesMenu.DropDownItems(i), ToolStripMenuItem).Checked = True
+                            End If
+                        Next
+                    End Sub
+        AddHandler OpcionesMenu.Click,
+                    Sub()
+                        ' Mostrar la ventana de opciones
+                        Dim opFrm As New OpcionesForm(colFics)
+                        With opFrm
+                            .CargarUltimo = cargarUltimo
+                            .ColorearAlCargar = colorearAlCargar
+                            If .ShowDialog() = DialogResult.OK Then
+                                colorearAlCargar = .ColorearAlCargar
+                                cargarUltimo = .CargarUltimo
+                                colFics.Clear()
+                                colFics.AddRange(.ColFics)
+                                AsignarRecientes()
+                                GuardarConfig()
+                            End If
+                        End With
+                    End Sub
+        AddHandler CopiarPathMenu.Click,
+                    Sub()
+                        Try
+                            Clipboard.SetText(ultimoFic)
+                        Catch ex As Exception
+                        End Try
+                    End Sub
         AddHandler RecargarFicheroMenu.Click, Sub() Recargar()
         AddHandler RecargarMenu.Click, Sub() Recargar()
 
-        AddHandler cboFuenteNombre.TextChanged, Sub()
-                                                    Try
-                                                        FuenteAceptarMenu.Font = New Font(cboFuenteNombre.Text, CSng(cboFuenteTamaño.Text))
-                                                    Catch ex As Exception
-                                                    End Try
-                                                End Sub
+        AddHandler cboFuenteNombre.TextChanged,
+                    Sub()
+                        Try
+                            FuenteAceptarMenu.Font = New Font(cboFuenteNombre.Text, CSng(cboFuenteTamaño.Text))
+                        Catch ex As Exception
+                        End Try
+                    End Sub
 
-        AddHandler cboFuenteTamaño.TextChanged, Sub()
-                                                    Try
-                                                        FuenteAceptarMenu.Font = New Font(cboFuenteNombre.Text, CSng(cboFuenteTamaño.Text))
-                                                    Catch ex As Exception
-                                                    End Try
-                                                End Sub
+        AddHandler cboFuenteTamaño.TextChanged,
+                    Sub()
+                        Try
+                            FuenteAceptarMenu.Font = New Font(cboFuenteNombre.Text, CSng(cboFuenteTamaño.Text))
+                        Catch ex As Exception
+                        End Try
+                    End Sub
 
-        AddHandler FuenteAceptarMenu.Click, Sub()
-                                                fuenteNombre = cboFuenteNombre.Text
-                                                fuenteTamaño = cboFuenteTamaño.Text
-                                                rtbCodigo.Font = New Font(fuenteNombre, CSng(fuenteTamaño))
-                                                LabelFuente.Text = $"{fuenteNombre}; {fuenteTamaño}"
-                                                If colorearAlCargar Then ColorearCodigo()
-                                                GuardarConfig()
-                                            End Sub
+        AddHandler FuenteAceptarMenu.Click,
+                    Sub()
+                        fuenteNombre = cboFuenteNombre.Text
+                        fuenteTamaño = cboFuenteTamaño.Text
+                        rtbCodigo.Font = New Font(fuenteNombre, CSng(fuenteTamaño))
+                        LabelFuente.Text = $"{fuenteNombre}; {fuenteTamaño}"
+                        If colorearAlCargar Then ColorearCodigo()
+                        GuardarConfig()
+                    End Sub
     End Sub
 
     Private Sub GuardarConfig()
@@ -377,7 +437,6 @@ Public Class Form1
         End Using
         codigoAnt = sCodigo
 
-        'LabelInfo.Text = $"{Path.GetFileName(fic)} con {rtbCodigo.Text.Length} caracteres."
         LabelInfo.Text = $"{Path.GetFileName(fic)} ({Path.GetDirectoryName(fic)})"
         LabelTamaño.Text = $"{rtbCodigo.Text.Length:#,##0} car."
         TextoModificado = False
@@ -432,7 +491,6 @@ Public Class Form1
             End If
         End If
 
-        'LabelInfo.Text = $"{Path.GetFileName(fic)} con {rtbCodigo.Text.Length} caracteres."
         LabelInfo.Text = $"{Path.GetFileName(fic)} ({Path.GetDirectoryName(fic)})"
         LabelTamaño.Text = $"{rtbCodigo.Text.Length:#,##0} car."
         If colFics.Contains(ultimoFic) = False Then
@@ -446,6 +504,25 @@ Public Class Form1
     End Sub
 
     Private Sub AcercaDe_Click(sender As Object, e As EventArgs)
+        ' Añadir la versión de esta utilidad                        (15/Sep/20)
+        Dim ensamblado As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly
+        Dim fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(ensamblado.Location)
+        'Dim vers = $" v{My.Application.Info.Version} ({fvi.FileVersion})"
+        Dim versionAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyVersionAttribute), False)
+        Dim vers = If(versionAttr.Length > 0,
+                                (TryCast(versionAttr(0), System.Reflection.AssemblyVersionAttribute)).Version,
+                                "1.0.0.0")
+        Dim prodAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyProductAttribute), False)
+        Dim producto = If(prodAttr.Length > 0,
+                                (TryCast(prodAttr(0), System.Reflection.AssemblyProductAttribute)).Product,
+                                "gsCompilarEjecutarNET")
+        Dim descAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyDescriptionAttribute), False)
+        Dim desc = If(descAttr.Length > 0,
+                                (TryCast(descAttr(0), System.Reflection.AssemblyDescriptionAttribute)).Description,
+                                "(para .NET 5.0 revisión del 15/Sep/2020)")
+        desc = desc.Substring(desc.IndexOf("(para .NET"))
+
+
         Dim verColorear = gsCol.Version(completa:=True)
         Dim verCompilar = Compilar.Version(completa:=True)
         Dim i = verColorear.LastIndexOf(" (")
@@ -457,12 +534,15 @@ Public Class Form1
             verCompilar = $"{verCompilar.Substring(0, i)}{vbCrLf}{verCompilar.Substring(i + 1)}"
         End If
 
-        MessageBox.Show("Utilidad para .NET 5.0 (.NET Core) para mostrar código en VB o C#, " &
-                        "colorearlo y compilarlo." & vbCrLf & vbCrLf &
+        Dim descL = "Utilidad para .NET 5.0 (.NET Core) para mostrar código en VB o C#, colorearlo y compilarlo."
+
+        MessageBox.Show($"{producto} v{vers} ({fvi.FileVersion})" & vbCrLf & vbCrLf &
+                        $"{descL}" & vbCrLf &
+                        $"{desc}" & vbCrLf & vbCrLf &
                         "Usando las DLL externas:" & vbCrLf &
                         verColorear & vbCrLf & vbCrLf &
                         verCompilar,
-                        "Acerca de Compilar NETCore WinForms VB",
+                        $"Acerca de {producto}",
                         MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
@@ -474,7 +554,7 @@ Public Class Form1
     '''  Saber la línea y columna de la posición del cursor
     ''' </summary>
     Private Sub mostrarPosicion(e As KeyEventArgs)
-        ' Saber la línea y columna de la posición del cursor        (11/Abr/19)
+        ' Saber la línea y columna de la posición del cursor
         Dim pos As Integer = rtbCodigo.SelectionStart + 1
         Dim lin As Integer = rtbCodigo.GetLineFromCharIndex(pos) + 1
         Dim col As Integer = pos - rtbCodigo.GetFirstCharIndexOfCurrentLine()
@@ -489,7 +569,6 @@ Public Class Form1
             End If
         End If
 
-        'LabelPos.Text = $"Línea: {lin}  Carácter: {col}"
         LabelPos.Text = $"Lín: {lin}  Car: {col}"
     End Sub
 
