@@ -9,6 +9,8 @@ Aunque te recomiendo que te descargues el código de esas dos de los repositorio
 gsColorearNET: https://github.com/elGuille-info/gsColorearNET<br>
 gsCompilarNET: https://github.com/elGuille-info/gsCompilarNET<br>
 <br>
+También he añadido <b>gsCompilarEjecutarNET cs</b>, la utilidad convertida a código de C#.<br>
+<br>
 <b>Nota:</b><br>
 Esta versión utiliza .NET 5.0 Preview 8 y para usarla necesitarás Visual Studio 2019 Preview (yo estoy usando la versión Version 16.8.0 Preview 2.1.<br>
 El editor de Windows Forms para Visual Basic deja mucho que desear, e incluso no me funcionan ni los <b>Settings</b> ni los <b>recursos</b> y tampoco <b>My</b>.<br>
