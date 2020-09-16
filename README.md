@@ -44,6 +44,8 @@ Corrigo algunos fallos como no tener enlazado el evento Click del menú Nuevo.<b
 Fallaba al abrir un fichero que no existe.<br>
 Si cargarUltimo era False al estar asignado ultimoFic si se intentaba abrir ese fichero, no lo abría.<br>
 <br>
+Actualizo el código de gsColorearNET a la versión 1.0.0.7 del 16 de septiemrbe de 2020<br>
+<br>
 v1.0.0.6 del 15 de septiembre de 2020:<br>
 El formulario principal muestra las líneas de código y se sincroniza con el código<br>
 Modifico el AcercaDe mostrando la versión de la utilidad.<br>
