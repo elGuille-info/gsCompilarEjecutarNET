@@ -419,7 +419,7 @@ Partial Class Form1
         Me.txtFilas.Size = New System.Drawing.Size(39, 396)
         Me.txtFilas.TabIndex = 3
         Me.txtFilas.TabStop = False
-        Me.txtFilas.Text = "1" & Global.Microsoft.VisualBasic.ChrW(13) & "2" & Global.Microsoft.VisualBasic.ChrW(13) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & "5" & Global.Microsoft.VisualBasic.ChrW(13) & "6" & Global.Microsoft.VisualBasic.ChrW(13) & "7" & Global.Microsoft.VisualBasic.ChrW(13) & "8" & Global.Microsoft.VisualBasic.ChrW(13) & "9" & Global.Microsoft.VisualBasic.ChrW(13) & "10" & Global.Microsoft.VisualBasic.ChrW(13) & "11" & Global.Microsoft.VisualBasic.ChrW(13) & "12" & Global.Microsoft.VisualBasic.ChrW(13) & "13" & Global.Microsoft.VisualBasic.ChrW(13) & "14" & Global.Microsoft.VisualBasic.ChrW(13) & "15" & Global.Microsoft.VisualBasic.ChrW(13) & "99" & Global.Microsoft.VisualBasic.ChrW(13) & "100" & Global.Microsoft.VisualBasic.ChrW(13) & "101"
+        Me.txtFilas.Text = ""
         '
         'Form1
         '

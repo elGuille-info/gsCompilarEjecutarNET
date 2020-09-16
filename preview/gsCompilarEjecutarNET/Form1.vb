@@ -66,15 +66,15 @@ Public Class Form1
 
 #End Region
 
+    Private TamForm As (L As Integer, T As Integer, H As Integer, W As Integer)
+
     Private fuenteNombre As String = gsCol.FuentePre
     Private fuenteTamaño As String = gsCol.FuenteTamPre
     Private cargarUltimo As Boolean
     Private colorearAlCargar As Boolean
-
     Private inicializando As Boolean = True
     Private codigoNuevo As String
     Private codigoAnt As String
-    Private TamForm As (L As Integer, T As Integer, H As Integer, W As Integer)
     Private Const maxFicsMenu As Integer = 15
     Private Const maxFicsConfig As Integer = 100
     Private colFics As New List(Of String)
@@ -141,6 +141,7 @@ Public Class Form1
         AddHandler SaveAsMenu.Click, Sub() GuardarAs()
         AddHandler ColorearMenu.Click, Sub() ColorearCodigo()
         AddHandler NoColorearMenu.Click, Sub() NoColorear()
+        AddHandler NewMenu.Click, Sub() Nuevo()
 
         AddHandler rtbCodigo.VScroll, AddressOf RichTextBox_VScroll
         AddHandler rtbCodigo.FontChanged,
@@ -253,8 +254,14 @@ Public Class Form1
 
     Private Sub GuardarConfig()
         Dim cfg = New gsColorearNET.Config(ficConfig)
-        cfg.SetValue("Ficheros", "Ultimo", ultimoFic)
+
+        ' Si cargarUltimo es falso no guardar el último fichero     (16/Sep/20)
         cfg.SetValue("Ficheros", "CargarUltimo", cargarUltimo)
+        If cargarUltimo Then
+            cfg.SetValue("Ficheros", "Ultimo", ultimoFic)
+        Else
+            cfg.SetValue("Ficheros", "Ultimo", "")
+        End If
         cfg.SetValue("Herramientas", "Lenguaje", cboLenguajes.Text)
         cfg.SetValue("Herramientas", "Colorear", colorearAlCargar)
 
@@ -282,8 +289,14 @@ Public Class Form1
 
     Private Sub LeerConfig()
         Dim cfg = New gsColorearNET.Config(ficConfig)
-        ultimoFic = cfg.GetValue("Ficheros", "Ultimo", "")
+
+        ' Si cargarUltimo es falso no asignar el último fichero     (16/Sep/20)
         cargarUltimo = cfg.GetValue("Ficheros", "CargarUltimo", False)
+        If cargarUltimo Then
+            ultimoFic = cfg.GetValue("Ficheros", "Ultimo", "")
+        Else
+            ultimoFic = ""
+        End If
         cboLenguajes.Text = cfg.GetValue("Herramientas", "Lenguaje", "VB")
         colorearAlCargar = cfg.GetValue("Herramientas", "Colorear", False)
 
@@ -390,7 +403,9 @@ Public Class Form1
                                       lang,
                                       gsCol.FormatosColoreado.RTF,
                                       asignarCase:=False,
-                                      indentar:=4)
+                                      indentar:=4,
+                                      quitarEspaciosIniciales:=False,
+                                      gsCol.ComprobacionesRem.Todos)
 
         rtbCodigo.Rtf = codigo
 
@@ -401,10 +416,12 @@ Public Class Form1
     Private Sub Nuevo()
         If TextoModificado Then GuardarAs()
         rtbCodigo.Text = ""
+        txtFilas.Text = ""
         ultimoFic = ""
         TextoModificado = False
         LabelInfo.Text = ""
         LabelPos.Text = ""
+        LabelTamaño.Text = ""
         codigoAnt = ""
     End Sub
 
@@ -448,8 +465,8 @@ Public Class Form1
     End Sub
 
     Private Sub Recargar()
-        If ultimoFic = "" Then Return
-        Abrir(ultimoFic)
+        If ultimoFic <> "" Then _
+            Abrir(ultimoFic)
     End Sub
 
     Private Sub Abrir()
@@ -467,6 +484,11 @@ Public Class Form1
     End Sub
 
     Private Sub Abrir(fic As String)
+        If Not File.Exists(fic) Then
+            LabelInfo.Text = $"No existe {fic}"
+            Return
+        End If
+
         LabelInfo.Text = $"Cargando {fic}..."
 
         Dim sCodigo = ""
@@ -519,7 +541,7 @@ Public Class Form1
         Dim descAttr = ensamblado.GetCustomAttributes(GetType(System.Reflection.AssemblyDescriptionAttribute), False)
         Dim desc = If(descAttr.Length > 0,
                                 (TryCast(descAttr(0), System.Reflection.AssemblyDescriptionAttribute)).Description,
-                                "(para .NET 5.0 revisión del 15/Sep/2020)")
+                                "(para .NET 5.0 revisión del 16/Sep/2020)")
         desc = desc.Substring(desc.IndexOf("(para .NET"))
 
 
