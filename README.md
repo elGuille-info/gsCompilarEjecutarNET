@@ -32,7 +32,7 @@ gsCompilarNET: https://www.nuget.org/packages/gsCompilarNET/<br>
 <br>
 Guillermo<br>
 <br>
-Actualizado el 15 de septiembre de 2020 a las 21:23 GMT+2<br>
+Actualizado el 16 de septiembre de 2020 a las 15:53 GMT+2<br>
 <br>
 <br>
 <h2>Revisiones</h2>
@@ -45,6 +45,7 @@ Fallaba al abrir un fichero que no existe.<br>
 Si cargarUltimo era False al estar asignado ultimoFic si se intentaba abrir ese fichero, no lo abría.<br>
 <br>
 Actualizo el código de gsColorearNET a la versión 1.0.0.7 del 16 de septiemrbe de 2020<br>
+Añado el proyecto en C# de la utilidad (convertirdo desde el último publicado de Visual Basic .NET<br>
 <br>
 v1.0.0.6 del 15 de septiembre de 2020:<br>
 El formulario principal muestra las líneas de código y se sincroniza con el código<br>
