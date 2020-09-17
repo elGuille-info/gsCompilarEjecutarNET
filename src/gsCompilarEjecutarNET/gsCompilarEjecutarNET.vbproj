@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <RootNamespace>gsCompilarEjecutarNET</RootNamespace>
+    <StartupObject>Sub Main</StartupObject>
+    <UseWindowsForms>true</UseWindowsForms>
+
+    <Version>1.0.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.8</FileVersion>
+    <Authors>Guillermo Som (Guille)</Authors>
+    <Company>elGuille</Company>
+    <Description>Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la aplicación.
+Tanto para aplicaciones de consola como de Windows Forms.
+(para .NET 5.0 revisión del 17/Sep/2020)</Description>
+    <Copyright>Copyright © Guillermo Som (Guille), 2020</Copyright>
+    <ApplicationIcon>VSProject_genericproject.Office_Deve.ico</ApplicationIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/elGuille-info/gsCompilarEjecutarNET</RepositoryUrl>
+    <PackageIcon>gsCompilarEjecutarNET.jpg</PackageIcon>
+    <PackageTags>visual-basic dotnet dotnet-core WinForms gsColorearNET gsCompilarNET</PackageTags>
+    <NeutralLanguage>es-es</NeutralLanguage>
+    <PackageReleaseNotes>v1.0.0.8 - 17/Sep/20 - Actualizado con las nuevas versiones de gsColorearNET (v1.0.0.8) gsCompilarNET (v1.0.0.2)</PackageReleaseNotes>
+
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>CompilarCore=0</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\gsColorearNET\gsColorearNET.vbproj" />
+    <ProjectReference Include="..\gsCompilarNET\gsCompilarNET.vbproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="gsCompilarEjecutarNET.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+
+</Project>
