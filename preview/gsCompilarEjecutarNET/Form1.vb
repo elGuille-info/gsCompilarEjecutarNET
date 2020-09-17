@@ -25,7 +25,12 @@ Imports gsCol = gsColorearNET.Colorear
 ' El espacio de nombres que tiene la definición de Lenguajes
 Imports gsDev = gsColorearNET
 ' La clase de Compilar
+#If CompilarCore = 1 Then ' Asignar en Compile>Advanced Compile Options>Custom constants
+Imports gsCompilarCore
+#Else
 Imports gsCompilarNET
+#End If
+
 
 Public Class Form1
 
