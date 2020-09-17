@@ -40,6 +40,7 @@ Actualizado el 17 de septiembre de 2020 a las 14:30 GMT+2<br>
 <h2>Revisiones</h2>
 v1.0.0.8 del 17 de septiembre de 2020<br>
 Actualizado con las nuevas versiones de gsColorearNET (v1.0.0.8) gsCompilarNET (v1.0.0.2)<br>
+<br>
 v1.0.0.7 del 15 y 16 de septiembre de 2020<br>
 Añado control para mostrar los números de líneas.<br>
 Se sincronizan los dos RichTexBox (el código y los números de líneas).<br>
