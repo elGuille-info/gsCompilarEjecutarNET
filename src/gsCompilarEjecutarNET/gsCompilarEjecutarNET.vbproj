@@ -9,12 +9,12 @@
 
     <Version>1.0.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.8</FileVersion>
+    <FileVersion>1.0.0.10</FileVersion>
     <Authors>Guillermo Som (Guille)</Authors>
     <Company>elGuille</Company>
     <Description>Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la aplicación.
 Tanto para aplicaciones de consola como de Windows Forms.
-(para .NET 5.0 revisión del 17/Sep/2020)</Description>
+(para .NET 5.0 revisión del 18/Sep/2020)</Description>
     <Copyright>Copyright © Guillermo Som (Guille), 2020</Copyright>
     <ApplicationIcon>VSProject_genericproject.Office_Deve.ico</ApplicationIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -23,7 +23,10 @@ Tanto para aplicaciones de consola como de Windows Forms.
     <PackageIcon>gsCompilarEjecutarNET.jpg</PackageIcon>
     <PackageTags>visual-basic dotnet dotnet-core WinForms gsColorearNET gsCompilarNET</PackageTags>
     <NeutralLanguage>es-es</NeutralLanguage>
-    <PackageReleaseNotes>v1.0.0.8 - 17/Sep/20 - Actualizado con las nuevas versiones de gsColorearNET (v1.0.0.8) gsCompilarNET (v1.0.0.2)</PackageReleaseNotes>
+    <PackageReleaseNotes>v1.0.0.10 Con panel para buscar y reemplazar y funciones para buscar, buscar siguiente, reemplazar y reemplazar todos. También en el menú de edición están las 5 opciones.
+v1.0.0.9 Opciones de Buscar y Reemplazar.
+Pongo WordWrap del RichTextBox a false para que no corte las líneas.
+v1.0.0.8 - 17/Sep/20 - Actualizado con las nuevas versiones de gsColorearNET (v1.0.0.8) gsCompilarNET (v1.0.0.2)</PackageReleaseNotes>
 
   </PropertyGroup>
 
@@ -50,7 +53,19 @@ Tanto para aplicaciones de consola como de Windows Forms.
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="My Project\" />
+    <Compile Update="My Project\Resources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="My Project\Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
