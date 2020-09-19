@@ -18,11 +18,12 @@ Friend Module Program
         Application.SetHighDpiMode(HighDpiMode.SystemAware)
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
-        Try
-            Application.Run(New Form1)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
+        Application.Run(New Form1)
+        'Try
+        '    Application.Run(New Form1)
+        'Catch ex As Exception
+        '    Debug.Assert(False, ex.Message)
+        'End Try
 
     End Sub
 

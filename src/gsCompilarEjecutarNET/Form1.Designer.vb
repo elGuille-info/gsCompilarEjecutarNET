@@ -95,6 +95,7 @@ Partial Class Form1
         Me.labelSeparator2 = New System.Windows.Forms.Label()
         Me.buttonReemplazarTodos = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.rtbCodigoContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.StatusContextMenu.SuspendLayout()
@@ -680,6 +681,11 @@ Partial Class Form1
         Me.buttonReemplazarTodos.TabIndex = 10
         Me.ToolTip1.SetToolTip(Me.buttonReemplazarTodos, "Reemplazar todos (Alt+A)")
         '
+        'rtbCodigoContextMenu
+        '
+        Me.rtbCodigoContextMenu.Name = "rtbCodigoContextMenu"
+        Me.rtbCodigoContextMenu.Size = New System.Drawing.Size(61, 4)
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
@@ -777,4 +783,5 @@ Partial Class Form1
     Private WithEvents buttonLenguaje As ToolStripSplitButton
     Private WithEvents menuVB As ToolStripMenuItem
     Private WithEvents menuCS As ToolStripMenuItem
+    Friend rtbCodigoContextMenu As ContextMenuStrip
 End Class

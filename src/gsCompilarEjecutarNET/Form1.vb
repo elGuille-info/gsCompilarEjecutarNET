@@ -8,6 +8,16 @@
 ' gsColorearNET .NET Standard 2.0
 ' gsCompilarNET .NET Core 3.1
 '
+'v1.0.0.9   Opciones de Buscar y Reemplazar.
+'           Pongo WordWrap del RichTextBox a False para que no corte las líneas.
+'v1.0.0.10  Con panel para buscar y reemplazar y
+'           funciones para buscar, buscar siguiente, reemplazar y reemplazar todos.
+'           También en el menú de edición están las 5 opciones.
+'v1.0.0.11  Nueva opción para compilar sin ejecutar y otras mejoras visuales.
+'v1.0.0.12  Se puede indicar la versión de los lenguajes.
+'           Se usa Latest para VB y Default (9.0) para C#.
+'v1.0.0.13  Añado un menú contextual al editor de código con los comandos de edición.
+'
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
 Option Strict On
@@ -33,6 +43,19 @@ Imports gsCompilarNET
 
 
 Public Class Form1
+
+    '   ''' <summary>
+    '   ''' Prueba de la versión 16.0 de Visual Basic.
+    '   ''' Necesita el package System.Data.SqlClient (4.8.2)
+    '   ''' </summary>
+    '   Private Sub Prueba()
+    '       Dim cmd = New SqlCommand
+    '       cmd.CommandText = ' Comment is allowed here without _
+    '           "SELECT * FROM Titles JOIN Publishers " _ ' This is a comment
+    '           & "ON Publishers.PubId = Titles.PubID " _
+    '_ ' This is a comment on a line without code
+    '           & "WHERE Publishers.State = 'CA'"
+    '   End Sub
 
 #Region " Para sincronizar los scrollbar de los richtextbox (15/Sep/20) "
 
@@ -191,34 +214,32 @@ Public Class Form1
     End Property
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'TODO: guardarlo en Documentos del usuario                  (18/Sep/20)
-        '      para que sea accesible siempre, por si se reinstala la aplciación
-        '      o se usa en desarrollo y se usan versiones Debug y Release
+        ' guardarlo en Documentos del usuario                       (18/Sep/20)
+        ' para que sea accesible siempre, por si se reinstala la aplicación
+        ' o se usa en desarrollo y se usan versiones Debug y Release
         'ficheroConfiguracion = Path.Combine(Environment.CurrentDirectory, Application.ProductName & ".appconfig.txt")
         Dim extension = ".appconfig.txt"
         Dim documentos = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         ficheroConfiguracion = Path.Combine(documentos, Application.ProductName & extension)
 
-        'buttonLenguaje.Enabled = False
-
         AsignaMetodosDeEventos()
+
         gsCol.AsignarPalabrasClave()
 
         LeerConfig()
         If cargarUltimo Then
             Abrir(nombreUltimoFichero)
 
-            ' Al cargar el formulario no se produce el evento       (18/Sep/20)
+            ' BUG: Al cargar el formulario no se produce el evento  (18/Sep/20)
             ' TextChanged del richTextBoxCodigo porque inicializando es True
 
+            ' BUG: No llamar a este método                          (18/Sep/20)
+            ' si no se ha abierto el fichero
+
             ' Mostrar los números de línea
-            Dim lin = richTextBoxCodigo.Text.Split(vbCr).Length
-            richTextBoxtFilas.Text = ""
-            For i = 1 To lin
-                richTextBoxtFilas.Text &= i.ToString("0").PadLeft(4) & vbCrLf
-            Next
-            ' Sincronizar los scrolls
-            RichTextBox_VScroll(Nothing, Nothing)
+            If nombreUltimoFichero <> "" Then _
+                AñadirNumerosDeLinea()
+
         End If
 
         ' Iniciar la posición al principio
@@ -231,7 +252,10 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        If TextoModificado Then
+        ' BUG: Si se pulsa en nuevo, se pega texto y no se guarda   (18/Sep/20)
+        ' al cerrar no pregunta si se quiere guardar.
+        ' Esto está solucionado en el evento de richTextBoxCodigo.TextChanged
+        If TextoModificado OrElse nombreUltimoFichero = "" Then
             GuardarAs()
         End If
         Form1_Resize(Nothing, Nothing)
@@ -278,16 +302,23 @@ Public Class Form1
                         If inicializando Then Return
                         codigoNuevo = richTextBoxCodigo.Text
                         If codigoNuevo = "" Then Return
-                        If codigoAnterior = "" Then Return
+
+                        ' BUG: Añadir los números de línea         (18/Sep/20)
+                        ' antes de la comparación de codigoAnterior
+
                         ' Añadir los números de línea               (15/Sep/20)
-                        Dim lin = codigoNuevo.Split(vbCr).Length
-                        richTextBoxtFilas.Text = ""
-                        For i = 1 To lin
-                            richTextBoxtFilas.Text &= i.ToString("0").PadLeft(4) & vbCrLf
-                        Next
-                        ' Sincronizar los scrolls
-                        RichTextBox_VScroll(Nothing, Nothing)
-                        TextoModificado = (codigoAnterior.Replace(vbCr, "").Replace(vbLf, "") <> codigoNuevo.Replace(vbLf, ""))
+                        AñadirNumerosDeLinea()
+
+                        If codigoAnterior = "" Then
+                            ' BUG: ya se ha pegado el texto         (18/Sep/20)
+                            ' y si no hay código anterior no se asigna TextoModificado
+                            TextoModificado = True
+                            Return
+                        End If
+
+                        ' En realidad no hace falta quitar los vbCr (18/Sep/20)
+                        'TextoModificado = (codigoAnterior.Replace(vbCr, "").Replace(vbLf, "") <> codigoNuevo.Replace(vbLf, ""))
+                        TextoModificado = (codigoAnterior <> codigoNuevo)
                     End Sub
 
         AddHandler comboLenguajes.SelectedIndexChanged, Sub()
@@ -306,14 +337,8 @@ Public Class Form1
         AddHandler menuCopy.Click, Sub() richTextBoxCodigo.Copy()
         AddHandler menuCut.Click, Sub() richTextBoxCodigo.Cut()
         AddHandler menuSelectAll.Click, Sub() richTextBoxCodigo.SelectAll()
-        AddHandler menuEdit.DropDownOpening,
-                    Sub()
-                        menuUndo.Enabled = richTextBoxCodigo.CanUndo
-                        menuRedo.Enabled = richTextBoxCodigo.CanRedo
-                        menuCopy.Enabled = richTextBoxCodigo.SelectionLength > 0
-                        menuCut.Enabled = menuCopy.Enabled
-                        menuPaste.Enabled = richTextBoxCodigo.CanPaste(DataFormats.GetFormat("Text"))
-                    End Sub
+        AddHandler menuEdit.DropDownOpening, Sub() menuEditDropDownOpenning()
+
         AddHandler menuCompilar.Click, Sub() Build()
         AddHandler menuCompilarEjecutar.Click, Sub() CompilarEjecutar()
 
@@ -399,6 +424,52 @@ Public Class Form1
         AddHandler chkMatchCase.Click, Sub() buscarMatchCase = chkMatchCase.Checked
         AddHandler chkWholeWord.Click, Sub() buscarWholeWord = chkWholeWord.Checked
 
+        ' Crear un context menú para el richTextBox del código      (18/Sep/20)
+        CrearContextMenuCodigo()
+        AddHandler rtbCodigoContextMenu.Opening, Sub() menuEditDropDownOpenning()
+
+    End Sub
+
+    ''' <summary>
+    ''' Cuando se abre el menú de edición
+    ''' asignar si están o no habilitados.
+    ''' </summary>
+    Private Sub menuEditDropDownOpenning()
+        menuUndo.Enabled = richTextBoxCodigo.CanUndo
+        menuRedo.Enabled = richTextBoxCodigo.CanRedo
+        menuCopy.Enabled = richTextBoxCodigo.SelectionLength > 0
+        menuCut.Enabled = menuCopy.Enabled
+        menuPaste.Enabled = richTextBoxCodigo.CanPaste(DataFormats.GetFormat("Text"))
+    End Sub
+
+    ''' <summary>
+    ''' Crear un menú contextual para richTextBoxCodigo
+    ''' para los comandos de edición
+    ''' </summary>
+    Private Sub CrearContextMenuCodigo()
+        rtbCodigoContextMenu.Items.Clear()
+        rtbCodigoContextMenu.Items.AddRange({menuUndo, menuRedo, toolSeparator,
+                                            menuCopy, menuPaste, menuCut, toolSeparator1,
+                                            menuSelectAll})
+        richTextBoxCodigo.ContextMenuStrip = rtbCodigoContextMenu
+    End Sub
+
+    ''' <summary>
+    ''' Añadir los números de línea
+    ''' </summary>
+    ''' <remarks>Como método separado 18/Sep/20</remarks>
+    Private Sub AñadirNumerosDeLinea()
+        ' BUG: Comprobar que codigoNuevo no esté vacio              (18/Sep/20)
+        ' Usar richTextBoxCodigo.Text en lugar de codigoNuevo
+        If richTextBoxCodigo.Text = "" Then Return
+
+        Dim lin = richTextBoxCodigo.Text.Split(vbCr).Length
+        richTextBoxtFilas.Text = ""
+        For i = 1 To lin
+            richTextBoxtFilas.Text &= i.ToString("0").PadLeft(4) & vbCrLf
+        Next
+        ' Sincronizar los scrolls
+        RichTextBox_VScroll(Nothing, Nothing)
     End Sub
 
     ''' <summary>
@@ -445,6 +516,8 @@ Public Class Form1
     Private Sub Pegar()
         If richTextBoxCodigo.CanPaste(DataFormats.GetFormat("Text")) Then
             richTextBoxCodigo.Paste(DataFormats.GetFormat("Text"))
+            ' BUG: obligar a poner las líneas                       (18/Sep/20)
+            AñadirNumerosDeLinea()
         End If
     End Sub
 
@@ -880,6 +953,8 @@ Public Class Form1
             .RestoreDirectory = True
             .Title = "Selecciona el archivo a guardar"
             If .ShowDialog() = DialogResult.OK Then
+                ' BUG: ¿faltaba esta asignación?                    (18/Sep/20)
+                nombreUltimoFichero = .FileName
                 Guardar(nombreUltimoFichero)
             End If
         End With
@@ -1079,6 +1154,20 @@ Public Class Form1
         Dim filepath = nombreUltimoFichero
         labelInfo.Text = "Compilando y ejecutando el código..."
         Me.Refresh()
+
+        ' Para VB no hay Preview, usar siempre Latest o Default
+        '   en .NET 5.0 RC1 Default es la 16,
+        '   puede que en otros compiladores haya que usar la 15.5,
+        '   por eso es mejor usar Latest
+        ' Asignar la versión Preview o Latest para C#
+        '   en .NET 5.0 RC1 Default es la 9.0
+        If comboLenguajes.Text = "VB" Then
+            Compilar.LanguageVersionVB = Microsoft.CodeAnalysis.VisualBasic.LanguageVersion.Default
+        Else
+            ' poner opción para uar Latest, Default o Preview usará la 9.0 en .NET 5.0
+            Compilar.LanguageVersionCS = Microsoft.CodeAnalysis.CSharp.LanguageVersion.Default
+        End If
+
         Dim res = Compilar.CompilarRun(filepath, run:=True)
         labelInfo.Text = res
 
@@ -1096,6 +1185,20 @@ Public Class Form1
         Dim filepath = nombreUltimoFichero
         labelInfo.Text = "Compilando el código..."
         Me.Refresh()
+
+        ' Para VB no hay Preview, usar siempre Latest o Default
+        '   en .NET 5.0 RC1 Default es la 16,
+        '   puede que en otros compiladores haya que usar la 15.5,
+        '   por eso es mejor usar Latest
+        ' Asignar la versión Preview o Latest para C#
+        '   en .NET 5.0 RC1 Default es la 9.0
+        If comboLenguajes.Text = "VB" Then
+            Compilar.LanguageVersionVB = Microsoft.CodeAnalysis.VisualBasic.LanguageVersion.Default
+        Else
+            ' poner opción para uar Latest, Default o Preview usará la 9.0 en .NET 5.0
+            Compilar.LanguageVersionCS = Microsoft.CodeAnalysis.CSharp.LanguageVersion.Default
+        End If
+
         Dim res = Compilar.CompilarGuardar(filepath, run:=False)
         labelInfo.Text = res
 
