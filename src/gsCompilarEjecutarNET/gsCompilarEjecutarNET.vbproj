@@ -9,12 +9,12 @@
 
     <Version>1.0.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.10</FileVersion>
+    <FileVersion>1.0.0.13</FileVersion>
     <Authors>Guillermo Som (Guille)</Authors>
     <Company>elGuille</Company>
     <Description>Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la aplicación.
 Tanto para aplicaciones de consola como de Windows Forms.
-(para .NET 5.0 revisión del 18/Sep/2020)</Description>
+(para .NET 5.0 revisión del 19/Sep/2020)</Description>
     <Copyright>Copyright © Guillermo Som (Guille), 2020</Copyright>
     <ApplicationIcon>VSProject_genericproject.Office_Deve.ico</ApplicationIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -23,10 +23,12 @@ Tanto para aplicaciones de consola como de Windows Forms.
     <PackageIcon>gsCompilarEjecutarNET.jpg</PackageIcon>
     <PackageTags>visual-basic dotnet dotnet-core WinForms gsColorearNET gsCompilarNET</PackageTags>
     <NeutralLanguage>es-es</NeutralLanguage>
-    <PackageReleaseNotes>v1.0.0.10 Con panel para buscar y reemplazar y funciones para buscar, buscar siguiente, reemplazar y reemplazar todos. También en el menú de edición están las 5 opciones.
+    <PackageReleaseNotes>v1.0.0.13 Añado un menú contextual al editor de código con los comandos de edición.
+v1.0.0.12 Se puede indicar la versión de los lenguajes. Se usa Latest para VB y Default (9.0) para C#.
+v1.0.0.11 Nueva opción para compilar sin ejecutar y otras mejoras visuales.
+v1.0.0.10 Con panel para buscar y reemplazar y funciones para buscar, buscar siguiente, reemplazar y reemplazar todos. También en el menú de edición están las 5 opciones.
 v1.0.0.9 Opciones de Buscar y Reemplazar.
-Pongo WordWrap del RichTextBox a false para que no corte las líneas.
-v1.0.0.8 - 17/Sep/20 - Actualizado con las nuevas versiones de gsColorearNET (v1.0.0.8) gsCompilarNET (v1.0.0.2)</PackageReleaseNotes>
+Pongo WordWrap del RichTextBox a false para que no corte las líneas.</PackageReleaseNotes>
 
   </PropertyGroup>
 
