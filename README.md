@@ -3,8 +3,8 @@ Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la ap
 Tanto para aplicaciones de consola como de Windows Forms.<br>
 <br>
 <br>
-## Esta aplicación ya no tendrá más actualizaciones.
-# En su lugar publicaré otra que incluirá evaluación del código y algunas utilidades más.
+# Esta aplicación ya no tendrá más actualizaciones.
+## En su lugar publicaré otra que incluirá evaluación del código y algunas utilidades más.
 <br>
 <br>
 En la carpeta <b>src</b> (antes preview) está el código fuente y el proyecto para Visual Basic, también habrá copias de los otros dos proyectos que utiliza esta utilidad:<br>
