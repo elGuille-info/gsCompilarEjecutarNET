@@ -1,39 +1,39 @@
-'------------------------------------------------------------------------------
+Ôªø'------------------------------------------------------------------------------
+' Config - Clase para manejar ficheros de configuraci√≥n             (21/Sep/20)
+' Usada de forma independiente de gsColorearNET
+'
+'###############################################################
+' IMPORTANTE:
+' Cualquier cambio hacerlo tambi√©n en la clase de gsColorearNET
+'###############################################################
+'
 ' Clase definida en la biblioteca para .NET Standard 2.0            (10/Sep/20)
 ' Basada en gsColorear y gsColorearCore
 '
-'###############################################################
-' IMPORTANTE:                                       (21/Sep/20)
-' Cualquier cambio hacerlo tambiÈn en la clase independiente
-' Usada actualmente por:
-'   gsEvaluarColorearCodigoNET
-'###############################################################
+' Clase para manejar ficheros de configuraci√≥n                      (15/Nov/05)
 '
 '
-' Clase para manejar ficheros de configuraciÛn                      (15/Nov/05)
-'
-'
-' Las secciones siempre estar·n dentro de <configuration>
-' al menos asÌ lo guardar· esta clase, aunque permite leer pares key / value.
+' Las secciones siempre estar√°n dentro de <configuration>
+' al menos as√≠ lo guardar√° esta clase, aunque permite leer pares key / value.
 ' Para que se sepa que se lee de configuration,
-' en el cÛdigo se indica explÌcitamente.
+' en el c√≥digo se indica expl√≠citamente.
 '
-' Basada en mi cÛdigo publicado el 27/Feb/05 en:
+' Basada en mi c√≥digo publicado el 27/Feb/05 en:
 ' http://www.elguille.info/NET/dotnet/appSettings2.htm
 ' Pero para usarla de forma independiente de ConfigurationSettings
 '
-' Revisado para poder guardar autom·ticamente                       (21/Feb/06)
-' Poder leer todas las secciones y las claves de una secciÛn        (21/Feb/06)
+' Revisado para poder guardar autom√°ticamente                       (21/Feb/06)
+' Poder leer todas las secciones y las claves de una secci√≥n        (21/Feb/06)
 '
 ' Nuevas sobrecargas de GetValue y SetValue para el tipo Double     (05/Sep/20)
 ' Nuevas sobrecargas de GetValue, SetValue y SetKeyValue            (10/Sep/20)
 '   para el tipo System.Windows.Forms.CheckState
-' .NET standard 2.0 no tiene la definciÛn de CheckState             (11/Sep/20)
+' .NET standard 2.0 no tiene la definci√≥n de CheckState             (11/Sep/20)
 '   comento estas definiciones.
 ' Nueva sobrecarga de SetKeyValue para el tipo Double               (11/Sep/20)
 '
 '
-' ©Guillermo 'guille' Som, 2005-2006, 2020
+' ¬©Guillermo 'guille' Som, 2005-2006, 2020
 '------------------------------------------------------------------------------
 Option Explicit On
 Option Strict On
@@ -51,35 +51,35 @@ Imports System.IO
 
 
 ''' <summary>
-''' Manejar ficheros de configuraciÛn
+''' Manejar ficheros de configuraci√≥n
 ''' </summary>
 Public Class Config
 
     '----------------------------------------------------------------------
-    ' Los campos y mÈtodos privados
+    ' Los campos y m√©todos privados
     '----------------------------------------------------------------------
     Private Const configuration As String = "configuration/"
     Private configXml As New XmlDocument
 
     '
     ''' <summary>
-    ''' Si se debe guardar autom·ticamente despuÈs de asignar un valor.
+    ''' Si se debe guardar autom√°ticamente despu√©s de asignar un valor.
     ''' </summary>
     ''' <value>Un valor de tipo Boolean</value>
     ''' <returns>Devuelve el valor actualmente asignado</returns>
     ''' <remarks>
-    ''' Si no se guarda autom·ticamente hay que llamar
-    ''' al mÈtodo Save para que se guarden en el fichero.
+    ''' Si no se guarda autom√°ticamente hay que llamar
+    ''' al m√©todo Save para que se guarden en el fichero.
     ''' </remarks>
     Public Property GuardarAlAsignar() As Boolean = True
 
     ''' <summary>
-    ''' Recupera el valor de la clave y la secciÛn indicados.
+    ''' Recupera el valor de la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <returns>
-    ''' El contenido de la clave y secciÛn.
+    ''' El contenido de la clave y secci√≥n.
     ''' </returns>
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean
@@ -89,16 +89,16 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Recupera el valor de la clave y la secciÛn indicados.
+    ''' Recupera el valor de la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="predeterminado">
     ''' El valor predeterminado a devolver si no existe la clave.
     ''' </param>
     ''' <returns>
-    ''' El contenido de la clave y secciÛn.
-    ''' El tipo devuelto depende del tipo del pr·metro predeterminado.
+    ''' El contenido de la clave y secci√≥n.
+    ''' El tipo devuelto depende del tipo del pr√°metro predeterminado.
     ''' </returns>
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean
@@ -108,16 +108,16 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Recupera el valor de la clave y la secciÛn indicados.
+    ''' Recupera el valor de la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="predeterminado">
     ''' El valor predeterminado a devolver si no existe la clave.
     ''' </param>
     ''' <returns>
-    ''' El contenido de la clave y secciÛn.
-    ''' El tipo devuelto depende del tipo del pr·metro predeterminado.
+    ''' El contenido de la clave y secci√≥n.
+    ''' El tipo devuelto depende del tipo del pr√°metro predeterminado.
     ''' </returns>
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean
@@ -127,7 +127,7 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Recupera un valor de la calve y secciÛn indicados, el valor devuelto es Double.
+    ''' Recupera un valor de la calve y secci√≥n indicados, el valor devuelto es Double.
     ''' </summary>
     ''' <remarks>05/Sep/2020</remarks>
     Public Function GetValue(seccion As String, clave As String, predeterminado As Double) As Double
@@ -135,20 +135,20 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Recupera el valor de la clave y la secciÛn indicados.
+    ''' Recupera el valor de la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="predeterminado">
     ''' El valor predeterminado a devolver si no existe la clave.
     ''' </param>
     ''' <returns>
-    ''' El contenido de la clave y secciÛn.
-    ''' El tipo devuelto depende del tipo del pr·metro predeterminado.
+    ''' El contenido de la clave y secci√≥n.
+    ''' El tipo devuelto depende del tipo del pr√°metro predeterminado.
     ''' </returns>
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
-    ''' Cuando es Boolean, se guarda 1 Û 0 seg˙n sea True o False.
+    ''' Cuando es Boolean, se guarda 1 √≥ 0 seg√∫n sea True o False.
     ''' </remarks>
     Public Function GetValue(seccion As String, clave As String, predeterminado As Boolean) As Boolean
         Return If(cfgGetValue(seccion, clave, If(predeterminado, "1", "0")) = "1",
@@ -156,10 +156,10 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados.
+    ''' Asigna el valor en la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">
     ''' El valor a asignar.
     ''' </param>
@@ -171,10 +171,10 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados.
+    ''' Asigna el valor en la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">
     ''' El valor a asignar.
     ''' </param>
@@ -186,7 +186,7 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados usando el valor Double.
+    ''' Asigna el valor en la clave y la secci√≥n indicados usando el valor Double.
     ''' </summary>
     ''' <remarks>05/Sep/20</remarks>
     Public Sub SetValue(seccion As String, clave As String, valor As Double)
@@ -194,11 +194,11 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' Asigna el valor Double en la clave y la secciÛn indicados.
-    ''' Usando atributos dentro de la secciÛn.
+    ''' Asigna el valor Double en la clave y la secci√≥n indicados.
+    ''' Usando atributos dentro de la secci√≥n.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">El valor a asignar</param>
     ''' <remarks>
     ''' 11/Sep/2020
@@ -207,7 +207,7 @@ Public Class Config
         cfgSetKeyValue(seccion, clave, valor.ToString)
     End Sub
 
-#Region " En .NET Standard 2.0 no hay definiciÛn de System.Windows.Forms.CheckState "
+#Region " En .NET Standard 2.0 no hay definici√≥n de System.Windows.Forms.CheckState "
 
     '''' <summary>
     '''' Devuelve el valor del tipo System.Windows.Forms.CheckState
@@ -227,7 +227,7 @@ Public Class Config
     'End Function
 
     '''' <summary>
-    '''' Asigna el valor en la clave y secciÛn indicados.
+    '''' Asigna el valor en la clave y secci√≥n indicados.
     '''' El tipo es System.Windows.Forms.CheckState
     '''' </summary>
     '''' <remarks>10/Sep/2020</remarks>
@@ -236,8 +236,8 @@ Public Class Config
     'End Sub
 
     '''' <summary>
-    '''' Asigna el valor en la clave y la secciÛn indicados.
-    '''' Usando atributos dentro de la secciÛn.
+    '''' Asigna el valor en la clave y la secci√≥n indicados.
+    '''' Usando atributos dentro de la secci√≥n.
     '''' El tipo es System.Windows.Forms.CheckState
     '''' </summary>
     '''' <remarks>10/Sep/2020</remarks>
@@ -247,27 +247,27 @@ Public Class Config
 #End Region
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados.
+    ''' Asigna el valor en la clave y la secci√≥n indicados.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">
     ''' El valor a asignar.
     ''' </param>
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
-    ''' Cuando es Boolean, se guarda 1 Û 0 seg˙n sea True o False.
+    ''' Cuando es Boolean, se guarda 1 √≥ 0 seg√∫n sea True o False.
     ''' </remarks>
     Public Sub SetValue(seccion As String, clave As String, valor As Boolean)
         cfgSetValue(seccion, clave, If(valor, "1", "0"))
     End Sub
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados.
-    ''' Usando atributos dentro de la secciÛn.
+    ''' Asigna el valor en la clave y la secci√≥n indicados.
+    ''' Usando atributos dentro de la secci√≥n.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">
     ''' El valor a asignar.
     ''' </param>
@@ -279,11 +279,11 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados.
-    ''' Usando atributos dentro de la secciÛn.
+    ''' Asigna el valor en la clave y la secci√≥n indicados.
+    ''' Usando atributos dentro de la secci√≥n.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">
     ''' El valor a asignar.
     ''' </param>
@@ -295,26 +295,26 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' Asigna el valor en la clave y la secciÛn indicados.
-    ''' Usando atributos dentro de la secciÛn.
+    ''' Asigna el valor en la clave y la secci√≥n indicados.
+    ''' Usando atributos dentro de la secci√≥n.
     ''' </summary>
-    ''' <param name="seccion">La secciÛn</param>
-    ''' <param name="clave">La clave dentro de la secciÛn</param>
+    ''' <param name="seccion">La secci√≥n</param>
+    ''' <param name="clave">La clave dentro de la secci√≥n</param>
     ''' <param name="valor">
     ''' El valor a asignar.
     ''' </param>
     ''' <remarks>
     ''' Existen sobrecargas para los tipos String, Integer y Boolean.
-    ''' Cuando es Boolean, se guarda 1 Û 0 seg˙n sea True o False.
+    ''' Cuando es Boolean, se guarda 1 √≥ 0 seg√∫n sea True o False.
     ''' </remarks>
     Public Sub SetKeyValue(seccion As String, clave As String, valor As Boolean)
         cfgSetValue(seccion, clave, If(valor, "1", "0"))
     End Sub
 
     ''' <summary>
-    ''' Elimina la secciÛn, en realidad la deja vacÌa,
+    ''' Elimina la secci√≥n, en realidad la deja vac√≠a,
     ''' </summary>
-    ''' <param name="seccion">La secciÛn a eliminar</param>
+    ''' <param name="seccion">La secci√≥n a eliminar</param>
     Public Sub RemoveSection(seccion As String)
         Dim n = configXml.SelectSingleNode(configuration & seccion)
         If n IsNot Nothing Then
@@ -326,11 +326,11 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' Devuelve una colecciÛn con los nombres de las secciones.
+    ''' Devuelve una colecci√≥n con los nombres de las secciones.
     ''' </summary>
     ''' <returns>
-    ''' Devuelve una colecciÛn de tipo List(Of String)
-    ''' con las secciones del fichero de configuraciÛn.
+    ''' Devuelve una colecci√≥n de tipo List(Of String)
+    ''' con las secciones del fichero de configuraci√≥n.
     ''' </returns>
     Public Function Secciones() As List(Of String)
         Dim d As New List(Of String)
@@ -344,14 +344,14 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Devuelve una colecciÛn con las claves de la secciÛn indicada.
+    ''' Devuelve una colecci√≥n con las claves de la secci√≥n indicada.
     ''' </summary>
     ''' <param name="seccion">
-    ''' SecciÛn de la que se quieren las claves
+    ''' Secci√≥n de la que se quieren las claves
     ''' </param>
     ''' <returns>
-    ''' Devuelve una colecciÛn de tipo Dictionary(Of String, String)
-    ''' con las claves de la secciÛn indicada.
+    ''' Devuelve una colecci√≥n de tipo Dictionary(Of String, String)
+    ''' con las claves de la secci√≥n indicada.
     ''' </returns>
     Public Function Claves(seccion As String) As Dictionary(Of String, String)
         Dim d As New Dictionary(Of String, String)
@@ -368,17 +368,17 @@ Public Class Config
     End Function
 
     ''' <summary>
-    ''' Guardar los datos en el fichero de configuraciÛn.
+    ''' Guardar los datos en el fichero de configuraci√≥n.
     ''' </summary>
     ''' <remarks>
-    ''' Si no se llama a este mÈtodo, no se guardar· de forma permanente.
+    ''' Si no se llama a este m√©todo, no se guardar√° de forma permanente.
     ''' </remarks>
     Public Sub Save()
         configXml.Save(FileName)
     End Sub
 
     ''' <summary>
-    ''' Lee el contenido del fichero de configuraciÛn.
+    ''' Lee el contenido del fichero de configuraci√≥n.
     ''' Si no existe, se crea uno nuevo
     ''' </summary>
     Public Sub Read()
@@ -386,7 +386,7 @@ Public Class Config
         Const revDate As String = "Sun, 13 Sep 2020 13:25:00 GMT"
         If File.Exists(fic) Then
             configXml.Load(fic)
-            ' Actualizar los datos de la informaciÛn de esta clase
+            ' Actualizar los datos de la informaci√≥n de esta clase
             Dim b = GuardarAlAsignar
             GuardarAlAsignar = False
             Me.SetValue("configXml_Info", "info", "Generado con Config para Visual Basic 2005")
@@ -395,7 +395,7 @@ Public Class Config
             GuardarAlAsignar = b
             Me.Save()
         Else
-            ' Crear el XML de configuraciÛn con la secciÛn General
+            ' Crear el XML de configuraci√≥n con la secci√≥n General
             Dim sb As New System.Text.StringBuilder
             sb.Append("<?xml version=""1.0"" encoding=""utf-8"" ?>")
             sb.Append("<configuration>")
@@ -404,16 +404,16 @@ Public Class Config
             sb.Append("<section name=""General"" type=""System.Configuration.DictionarySectionHandler"" />")
             sb.Append("</configSections>")
             sb.Append("<General>")
-            sb.Append("<!-- Los valores ir·n dentro del elemento indicado por la clave -->")
-            sb.Append("<!-- Aunque tambiÈn se podr·n indicar como pares key / value -->")
-            sb.AppendFormat("<add key=""RevisiÛn"" value=""{0}"" />", revDate)
-            sb.Append("<!-- La clase siempre los aÒade como un elemento -->")
-            sb.Append("<Copyright>©Guillermo 'guille' Som, 2005-2006</Copyright>")
+            sb.Append("<!-- Los valores ir√°n dentro del elemento indicado por la clave -->")
+            sb.Append("<!-- Aunque tambi√©n se podr√°n indicar como pares key / value -->")
+            sb.AppendFormat("<add key=""Revisi√≥n"" value=""{0}"" />", revDate)
+            sb.Append("<!-- La clase siempre los a√±ade como un elemento -->")
+            sb.Append("<Copyright>¬©Guillermo 'guille' Som, 2005-2006</Copyright>")
             sb.Append("</General>")
 
             sb.AppendFormat("<configXml_Info>{0}", vbCrLf)
             sb.AppendFormat("<info>Generado con Config para Visual Basic 2005</info>{0}", vbCrLf)
-            sb.AppendFormat("<copyright>©Guillermo 'guille' Som, 2005-2006</copyright>{0}", vbCrLf)
+            sb.AppendFormat("<copyright>¬©Guillermo 'guille' Som, 2005-2006</copyright>{0}", vbCrLf)
             sb.AppendFormat("<revision>{0}</revision>{1}", revDate, vbCrLf)
             sb.AppendFormat("<formatoUTF8>El formato de este fichero debe ser UTF-8</formatoUTF8>{0}", vbCrLf)
             sb.AppendFormat("</configXml_Info>{0}", vbCrLf)
@@ -428,15 +428,15 @@ Public Class Config
     End Sub
 
     ''' <summary>
-    ''' El nombre del fichero de configuraciÛn.
+    ''' El nombre del fichero de configuraci√≥n.
     ''' </summary>
     ''' <value>El nuevo nombre a asignar.</value>
     ''' <returns>
-    ''' Una cadena con el nombre del fichero de configuraciÛn
+    ''' Una cadena con el nombre del fichero de configuraci√≥n
     ''' </returns>
     ''' <remarks>
     ''' Al asignarlo, NO se lee el contenido del fichero,
-    ''' habr· que llamar al mÈtodo <seealso cref="Read">Read</seealso>
+    ''' habr√° que llamar al m√©todo <seealso cref="Read">Read</seealso>
     ''' </remarks>
     Public Property FileName() As String = ""
 
@@ -456,7 +456,7 @@ Public Class Config
     ''' </summary>
     ''' <param name="fic">Nombre del fichero ausar</param>
     ''' <param name="guardarAlAsignar">
-    ''' True si se guarda autom·ticamente al asignar,
+    ''' True si se guarda autom√°ticamente al asignar,
     ''' ver <seealso cref="GuardarAlAsignar">GuardarAlAsignar</seealso>.
     ''' </param>
     Public Sub New(fic As String, guardarAlAsignar As Boolean)
@@ -467,19 +467,19 @@ Public Class Config
 
     '
     '----------------------------------------------------------------------
-    ' Los mÈtodos privados
+    ' Los m√©todos privados
     '----------------------------------------------------------------------
     '
 
-    ' El mÈtodo interno para guardar los valores
-    ' Este mÈtodo siempre guardar· en el formato <seccion><clave>valor</clave></seccion>
+    ' El m√©todo interno para guardar los valores
+    ' Este m√©todo siempre guardar√° en el formato <seccion><clave>valor</clave></seccion>
     Private Sub cfgSetValue(seccion As String, clave As String, valor As String)
-        ' Filtrar los caracteres no v·lidos
+        ' Filtrar los caracteres no v√°lidos
         ' en principio solo comprobamos el espacio
         seccion = seccion.Replace(" ", "_")
         clave = clave.Replace(" ", "_")
 
-        ' Se comrpueba si es un elemento de la secciÛn:
+        ' Se comrpueba si es un elemento de la secci√≥n:
         '   <seccion><clave>valor</clave></seccion>
         Dim n = configXml.SelectSingleNode(configuration & seccion & "/" & clave)
         If n IsNot Nothing Then
@@ -489,7 +489,7 @@ Public Class Config
             Dim root = configXml.SelectSingleNode(configuration & seccion)
             If root Is Nothing Then
                 ' Si no existe el elemento principal,
-                ' lo aÒadimos a <configuration>
+                ' lo a√±adimos a <configuration>
                 elem = configXml.CreateElement(seccion)
                 configXml.DocumentElement.AppendChild(elem)
                 root = configXml.SelectSingleNode(configuration & seccion)
@@ -498,7 +498,7 @@ Public Class Config
                 ' Crear el elemento
                 elem = configXml.CreateElement(clave)
                 elem.InnerText = valor
-                ' AÒadirlo al nodo indicado
+                ' A√±adirlo al nodo indicado
                 root.AppendChild(elem)
             End If
         End If
@@ -508,12 +508,12 @@ Public Class Config
         End If
     End Sub
 
-    ' Asigna un atributo a una secciÛn
+    ' Asigna un atributo a una secci√≥n
     ' Por ejemplo: <Seccion clave=valor>...</Seccion>
-    ' TambiÈn se usar· para el formato de appSettings: <add key=clave value=valor />
+    ' Tambi√©n se usar√° para el formato de appSettings: <add key=clave value=valor />
     '   Aunque en este caso, debe existir el elemento a asignar.
     Private Sub cfgSetKeyValue(seccion As String, clave As String, valor As String)
-        ' Filtrar los caracteres no v·lidos
+        ' Filtrar los caracteres no v√°lidos
         ' en principio solo comprobamos el espacio
         seccion = seccion.Replace(" ", "_")
         clave = clave.Replace(" ", "_")
@@ -526,7 +526,7 @@ Public Class Config
             Dim root = configXml.SelectSingleNode(configuration & seccion)
             If root Is Nothing Then
                 ' Si no existe el elemento principal,
-                ' lo aÒadimos a <configuration>
+                ' lo a√±adimos a <configuration>
                 elem = configXml.CreateElement(seccion)
                 configXml.DocumentElement.AppendChild(elem)
                 root = configXml.SelectSingleNode(configuration & seccion)
@@ -545,18 +545,18 @@ Public Class Config
 
     ' Devolver el valor de la clave indicada
     Private Function cfgGetValue(seccion As String, clave As String, valor As String) As String
-        ' Filtrar los caracteres no v·lidos
+        ' Filtrar los caracteres no v√°lidos
         ' en principio solo comprobamos el espacio
         seccion = seccion.Replace(" ", "_")
         clave = clave.Replace(" ", "_")
 
-        ' Primero comprobar si est·n el formato de appSettings: <add key = clave value = valor />
+        ' Primero comprobar si est√°n el formato de appSettings: <add key = clave value = valor />
         Dim n = configXml.SelectSingleNode(configuration & seccion & "/add[@key=""" & clave & """]")
         If n IsNot Nothing Then
             Return n.Attributes("value").InnerText
         End If
 
-        ' DespuÈs se comprueba si est· en el formato <Seccion clave = valor>
+        ' Despu√©s se comprueba si est√° en el formato <Seccion clave = valor>
         n = configXml.SelectSingleNode(configuration & seccion)
         If n IsNot Nothing Then
             Dim a As XmlAttribute = n.Attributes(clave)
@@ -565,7 +565,7 @@ Public Class Config
             End If
         End If
 
-        ' Por ˙ltimo se comprueba si es un elemento de seccion:
+        ' Por √∫ltimo se comprueba si es un elemento de seccion:
         '   <seccion><clave>valor</clave></seccion>
         n = configXml.SelectSingleNode(configuration & seccion & "/" & clave)
         If n IsNot Nothing Then

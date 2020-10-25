@@ -6,6 +6,8 @@ Tanto para aplicaciones de consola como de Windows Forms.<br>
 # Esta aplicación ya no tendrá más actualizaciones.
 ## En su lugar publicaré otra que incluirá evaluación del código y algunas utilidades más.
 <br>
+La he actualizado con fecha del 25 de octubre de 2020 y he puesto la recomendación de que se use:<br>
+<b><a href="https://github.com/elGuille-info/gsEvaluarColorearCodigoNET">gsEvaluarColorearCodigoNET</a></b> (que no usa esta DLL, pero sí código mejorado y ampliado).<br>
 <br>
 En la carpeta <b>src</b> (antes preview) está el código fuente y el proyecto para Visual Basic, también habrá copias de los otros dos proyectos que utiliza esta utilidad:<br>
 gsColorearNET y gsCompilarNET.<br>
@@ -16,7 +18,7 @@ gsCompilarNET: https://github.com/elGuille-info/gsCompilarNET<br>
 También he añadido <b>gsCompilarEjecutarNET cs</b>, la utilidad convertida a código de C#.<br>
 <br>
 <b>Nota:</b><br>
-Esta versión utiliza .NET 5.0 Preview 8 y para usarla necesitarás Visual Studio 2019 Preview (yo estoy usando la versión Version 16.8.0 Preview 2.1.<br>
+Esta versión utiliza .NET 5.0 RC2 y para usarla necesitarás Visual Studio 2019 Preview (yo estoy usando la versión Version 16.8.0 Preview 5.0.<br>
 El editor de Windows Forms para Visual Basic deja mucho que desear, e incluso no me funcionan ni los <b>Settings</b> ni los <b>recursos</b> y tampoco <b>My</b>.<br>
 Por eso he tenido que asignar manualmente los métodos de eventos y si usara imágenes en los menús, etc., también tendría que asignarlos manualmente.<br>
 Esto último no es una suposición, ya que lo tengo comprobado en la utilidad <a href="https://github.com/elGuille-info/gsColorearCodigoNET">gsColorearCodigoNET</a>.<br>
@@ -38,11 +40,29 @@ gsCompilarNET: https://www.nuget.org/packages/gsCompilarNET/<br>
 <br>
 Guillermo<br>
 <br>
-Actualizado el 27 de septiembre de 2020 a las 09:52 GMT+2<br>
+Actualizado el 25 de octubre de 2020 a eso de las 14:23 GMT+2<br>
 <br>
 <br>
 <h2>Revisiones</h2>
-v1.0.0.8 del 17 de septiembre de 2020<br>
+v1.0.0.20 Avisar cada día... ¡hasta que se cambien! ;-)<br>
+v1.0.0.19 La primera vez que se inicia se muestra el aviso.<br>
+v1.0.0.18 Recomendación de usar gsEvaluarColorearCodigoNET.<br>
+v1.0.0.17 Mostrar los números de líneas. No se mostraba por culpa del tipo de retorno de línea.<br>
+Hago comprobación del tipo de retorno de carro (línea) tiene el texto.<br>
+v1.0.0.16 Comprobación de si la posición guardada del formulario está en el área visible.<br>
+v1.0.0.15 Uso .NET 5.0 RC2 y las actualizaciones de gsColorearNET y gsCompilarNET.<br>
+v1.0.0.14 Quito la clase gsColorearNET y uso los módulos ColorizeSupport, etc.<br>
+(25/Oct/20) Creo que no quité nada... se sigue usando la biblioteca gsColorearNET<br>
+v1.0.0.13 Añado un menú contextual al editor de código con los comandos de edición.<br>
+v1.0.0.12 Se puede indicar la versión de los lenguajes.<br>
+Se usa Latest para VB y Default (9.0) para C#.<br>
+v1.0.0.11 Nueva opción para compilar sin ejecutar y otras mejoras visuales.<br>
+v1.0.0.10 Con panel para buscar y reemplazar y funciones para buscar, buscar siguiente, reemplazar y reemplazar todos.<br>
+También en el menú de edición están las 5 opciones.<br>
+v1.0.0.9 Opciones de Buscar y Reemplazar.<br>
+Pongo WordWrap del RichTextBox a False para que no corte las líneas.<br>
+<br>
+v1.0.0.8 del 17 de septiembre de 2020 (con esta fecfha dije que no la actualizaría más)<br>
 Actualizado con las nuevas versiones de gsColorearNET (v1.0.0.8) gsCompilarNET (v1.0.0.2)<br>
 <br>
 v1.0.0.7 del 15 y 16 de septiembre de 2020<br>

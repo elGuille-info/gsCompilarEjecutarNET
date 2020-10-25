@@ -573,41 +573,41 @@ Partial Class Form1
         'buttonBuscarSiguiente
         '
         Me.buttonBuscarSiguiente.Image = CType(resources.GetObject("buttonBuscarSiguiente.Image"), System.Drawing.Image)
-        Me.buttonBuscarSiguiente.Location = New System.Drawing.Point(416, 3)
+        Me.buttonBuscarSiguiente.Location = New System.Drawing.Point(236, 2)
         Me.buttonBuscarSiguiente.Name = "buttonBuscarSiguiente"
         Me.buttonBuscarSiguiente.Size = New System.Drawing.Size(23, 22)
-        Me.buttonBuscarSiguiente.TabIndex = 7
+        Me.buttonBuscarSiguiente.TabIndex = 5
         Me.ToolTip1.SetToolTip(Me.buttonBuscarSiguiente, "Buscar siguiente (F3)")
         '
         'labelSeparator1
         '
-        Me.labelSeparator1.Location = New System.Drawing.Point(395, 1)
+        Me.labelSeparator1.Location = New System.Drawing.Point(215, 1)
         Me.labelSeparator1.Name = "labelSeparator1"
         Me.labelSeparator1.Size = New System.Drawing.Size(15, 25)
-        Me.labelSeparator1.TabIndex = 6
+        Me.labelSeparator1.TabIndex = 4
         Me.labelSeparator1.Text = " | "
         Me.labelSeparator1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'labelReemplazar
         '
-        Me.labelReemplazar.Location = New System.Drawing.Point(157, 1)
+        Me.labelReemplazar.Location = New System.Drawing.Point(286, 1)
         Me.labelReemplazar.Name = "labelReemplazar"
         Me.labelReemplazar.Size = New System.Drawing.Size(68, 22)
-        Me.labelReemplazar.TabIndex = 2
+        Me.labelReemplazar.TabIndex = 7
         Me.labelReemplazar.Text = "Reemplazar"
         Me.labelReemplazar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'comboReemplazar
         '
-        Me.comboReemplazar.Location = New System.Drawing.Point(231, 3)
+        Me.comboReemplazar.Location = New System.Drawing.Point(360, 3)
         Me.comboReemplazar.Name = "comboReemplazar"
         Me.comboReemplazar.Size = New System.Drawing.Size(100, 23)
-        Me.comboReemplazar.TabIndex = 3
+        Me.comboReemplazar.TabIndex = 8
         '
         'buttonReemplazarSiguiente
         '
         Me.buttonReemplazarSiguiente.Image = CType(resources.GetObject("buttonReemplazarSiguiente.Image"), System.Drawing.Image)
-        Me.buttonReemplazarSiguiente.Location = New System.Drawing.Point(466, 3)
+        Me.buttonReemplazarSiguiente.Location = New System.Drawing.Point(466, 2)
         Me.buttonReemplazarSiguiente.Name = "buttonReemplazarSiguiente"
         Me.buttonReemplazarSiguiente.Size = New System.Drawing.Size(23, 22)
         Me.buttonReemplazarSiguiente.TabIndex = 9
@@ -617,20 +617,20 @@ Partial Class Form1
         '
         Me.chkMatchCase.Appearance = System.Windows.Forms.Appearance.Button
         Me.chkMatchCase.Image = CType(resources.GetObject("chkMatchCase.Image"), System.Drawing.Image)
-        Me.chkMatchCase.Location = New System.Drawing.Point(337, 3)
+        Me.chkMatchCase.Location = New System.Drawing.Point(157, 2)
         Me.chkMatchCase.Name = "chkMatchCase"
         Me.chkMatchCase.Size = New System.Drawing.Size(23, 22)
-        Me.chkMatchCase.TabIndex = 4
+        Me.chkMatchCase.TabIndex = 2
         Me.ToolTip1.SetToolTip(Me.chkMatchCase, "Distinguir mayúsculas de minúsculas")
         '
         'chkWholeWord
         '
         Me.chkWholeWord.Appearance = System.Windows.Forms.Appearance.Button
         Me.chkWholeWord.Image = CType(resources.GetObject("chkWholeWord.Image"), System.Drawing.Image)
-        Me.chkWholeWord.Location = New System.Drawing.Point(366, 3)
+        Me.chkWholeWord.Location = New System.Drawing.Point(186, 2)
         Me.chkWholeWord.Name = "chkWholeWord"
         Me.chkWholeWord.Size = New System.Drawing.Size(23, 22)
-        Me.chkWholeWord.TabIndex = 5
+        Me.chkWholeWord.TabIndex = 3
         Me.ToolTip1.SetToolTip(Me.chkWholeWord, "Palabra completa")
         '
         'panelBuscar
@@ -665,17 +665,17 @@ Partial Class Form1
         '
         'labelSeparator2
         '
-        Me.labelSeparator2.Location = New System.Drawing.Point(445, 1)
+        Me.labelSeparator2.Location = New System.Drawing.Point(265, 1)
         Me.labelSeparator2.Name = "labelSeparator2"
         Me.labelSeparator2.Size = New System.Drawing.Size(15, 25)
-        Me.labelSeparator2.TabIndex = 8
+        Me.labelSeparator2.TabIndex = 6
         Me.labelSeparator2.Text = " | "
         Me.labelSeparator2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'buttonReemplazarTodos
         '
         Me.buttonReemplazarTodos.Image = CType(resources.GetObject("buttonReemplazarTodos.Image"), System.Drawing.Image)
-        Me.buttonReemplazarTodos.Location = New System.Drawing.Point(495, 3)
+        Me.buttonReemplazarTodos.Location = New System.Drawing.Point(495, 2)
         Me.buttonReemplazarTodos.Name = "buttonReemplazarTodos"
         Me.buttonReemplazarTodos.Size = New System.Drawing.Size(23, 22)
         Me.buttonReemplazarTodos.TabIndex = 10

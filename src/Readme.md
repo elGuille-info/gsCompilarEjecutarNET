@@ -1,6 +1,9 @@
 Directorio con el código fuente y la solución de Visual Studio 2019 preview<br>
 <br>
 <br>
+La carpeta <b>clases compartidas</b> Tiene las clases que están enlazadas mediante un link en el proyecto de VB (en realidad solo está actualmente la clase <b><i>Config.vb</i></b>.
+<br>
+<br>
 Agrego un nuevo proyecto en C# con la utilidad de compilar y ejecutar usando el mismo código que la versión 1.0.0.7 de gsCompilarEjecutarNET<br>
 <br>
 <br>
@@ -16,3 +19,4 @@ Y estos son los enlaces para los paquetes NuGet de esas dos bibliotecas (DLL):<b
 gsColorearNET: https://www.nuget.org/packages/gsColorearNET/<br>
 gsCompilarNET: https://www.nuget.org/packages/gsCompilarNET/<br>
 <br>
+Actualizado el 25 de octubre de 2020 a eso de las 14:27 GMT+1

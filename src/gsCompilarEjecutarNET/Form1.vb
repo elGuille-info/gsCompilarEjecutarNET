@@ -1,4 +1,4 @@
-﻿'------------------------------------------------------------------------------
+'------------------------------------------------------------------------------
 ' gsCompilarEjecutarNET                                             (08/Sep/20)
 ' Utilidad para colorear, compilar y ejecutar código de VB o C#
 '
@@ -17,6 +17,16 @@
 'v1.0.0.12  Se puede indicar la versión de los lenguajes.
 '           Se usa Latest para VB y Default (9.0) para C#.
 'v1.0.0.13  Añado un menú contextual al editor de código con los comandos de edición.
+'v1.0.0.14              Quito la clase gsColorearNET y uso los módulos ColorizeSupport, etc.
+'           25/Oct/20   Creo que no quité nada... se sigue usando la biblioteca gsColorearNET
+'v1.0.0.15  25/Oct/20   Uso .NET 5.0 RC2 y las actualizaciones de gsColorearNET y gsCompilarNET.
+'v1.0.0.16              Comprobación de si la posición guardada del formulario está en el área visible
+'v1.0.0.17              Mostrar los números de líneas. No se mostraba por culpa del tipo de retorno de línea.
+'                       Hago comprobación del tipo de retorno de carro (línea) tiene el texto.
+'v1.0.0.18              Recomendación de usar gsEvaluarColorearCodigoNET.
+'v1.0.0.19              La primera vez que se inicia se muestra el aviso.
+'v1.0.0.20              Avisar cada día... ¡hasta que se cambien! ;-)
+'
 '
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
@@ -43,19 +53,6 @@ Imports gsCompilarNET
 
 
 Public Class Form1
-
-    '   ''' <summary>
-    '   ''' Prueba de la versión 16.0 de Visual Basic.
-    '   ''' Necesita el package System.Data.SqlClient (4.8.2)
-    '   ''' </summary>
-    '   Private Sub Prueba()
-    '       Dim cmd = New SqlCommand
-    '       cmd.CommandText = ' Comment is allowed here without _
-    '           "SELECT * FROM Titles JOIN Publishers " _ ' This is a comment
-    '           & "ON Publishers.PubId = Titles.PubID " _
-    '_ ' This is a comment on a line without code
-    '           & "WHERE Publishers.State = 'CA'"
-    '   End Sub
 
 #Region " Para sincronizar los scrollbar de los richtextbox (15/Sep/20) "
 
@@ -89,6 +86,8 @@ Public Class Form1
     ''' Sincroniza los scrollbar de los dos richtextbox
     ''' </summary>
     Private Sub RichTextBox_VScroll(sender As Object, e As EventArgs)
+        If inicializando Then Return
+
         Dim nPos As Integer = GetScrollPos(richTextBoxCodigo.Handle, ScrollBarType.SbVert)
         nPos <<= 16
         Dim wParam As Long = ScrollBarCommands.SB_THUMBPOSITION Or nPos
@@ -96,6 +95,13 @@ Public Class Form1
     End Sub
 
 #End Region
+
+    ''' <summary>
+    ''' La fecha del último aviso de que está obsoleta la aplicación.
+    ''' Solo mostrar una vez al día.
+    ''' </summary>
+    ''' <remarks>25/Oct/2020</remarks>
+    Private FechaDelAviso As Date
 
     ''' <summary>
     ''' Tupla para guardar el tamaño y posición del formulario
@@ -144,11 +150,11 @@ Public Class Form1
     ''' <summary>
     ''' El nombre de la fuente a usar en el editor
     ''' </summary>
-    Private fuenteNombre As String = gsCol.FuentePre
+    Private fuenteNombre As String = "Consolas" 'gsCol.FuentePre
     ''' <summary>
     ''' El tamaño de la fuente a usar en el editor
     ''' </summary>
-    Private fuenteTamaño As String = gsCol.FuenteTamPre
+    Private fuenteTamaño As String = "11" 'gsCol.FuenteTamPre
     ''' <summary>
     ''' Si se debe cargar el último fichero abierto 
     ''' cuando se cerróa la aplicación
@@ -224,9 +230,30 @@ Public Class Form1
 
         AsignaMetodosDeEventos()
 
-        gsCol.AsignarPalabrasClave()
+        'gsCol.AsignarPalabrasClave()
 
         LeerConfig()
+
+        inicializando = False
+
+        ' avisar solo una vez cada día                              (25/Oct/20)
+        If FechaDelAviso.Date < Date.Now.Date Then
+            Dim descObsoleto = $"Esta utilidad está obsoleta, te recomiendo que utilices gsEvaluarColorearCodigoNET.{vbCrLf}{vbCrLf}"
+            descObsoleto &= $"Puedes descargar el código desde github{vbCrLf}{vbCrLf}¿Quieres ir a github/.../gsEvaluarColorearCodigoNET?"
+
+            If MessageBox.Show(descObsoleto,
+                               $"Esta aplicación está obsoleta",
+                               MessageBoxButtons.YesNo,
+                               MessageBoxIcon.Information) = DialogResult.Yes Then
+                Dim p As New Process
+                p.StartInfo.UseShellExecute = True
+                p.StartInfo.FileName = "https://github.com/elGuille-info/gsEvaluarColorearCodigoNET/"
+                p.Start()
+            End If
+            ' asignar la fecha cuando se avisón la última vez
+            FechaDelAviso = Date.Now
+        End If
+
         If cargarUltimo Then
             Abrir(nombreUltimoFichero)
 
@@ -244,7 +271,6 @@ Public Class Form1
 
         ' Iniciar la posición al principio
         mostrarPosicion(New KeyEventArgs(Keys.Home))
-        inicializando = False
 
         ComboBuscar_Validating()
         ComboReemplazar_Validating()
@@ -281,7 +307,7 @@ Public Class Form1
     ''' </summary>
     Private Sub AsignaMetodosDeEventos()
 
-        AddHandler menuAbout.Click, AddressOf AcercaDe_Click
+        AddHandler menuAbout.Click, Sub() AcercaDe()
         AddHandler menuExit.Click, Sub() Me.Close()
         AddHandler menuOpen.Click, Sub() Abrir()
         AddHandler menuSave.Click, Sub() Guardar()
@@ -327,6 +353,8 @@ Public Class Form1
                                                             Else
                                                                 buttonLenguaje.Image = buttonLenguaje.DropDownItems(1).Image
                                                             End If
+                                                            ' Asignar el lenguaje en el texto           (20/Sep/20)
+                                                            buttonLenguaje.Text = comboLenguajes.Text
                                                         End Sub
         AddHandler menuVB.Click, Sub() comboLenguajes.Text = menuVB.Text
         AddHandler menuCS.Click, Sub() comboLenguajes.Text = menuCS.Text
@@ -459,14 +487,25 @@ Public Class Form1
     ''' </summary>
     ''' <remarks>Como método separado 18/Sep/20</remarks>
     Private Sub AñadirNumerosDeLinea()
+        If inicializando Then Return
+
         ' BUG: Comprobar que codigoNuevo no esté vacio              (18/Sep/20)
         ' Usar richTextBoxCodigo.Text en lugar de codigoNuevo
         If richTextBoxCodigo.Text = "" Then Return
 
-        Dim lin = richTextBoxCodigo.Text.Split(vbCr).Length
+        ' Comprobar qué retorno de carro tiene el texto             (25/Oct/20)
+        Dim retorno = vbCrLf
+        If richTextBoxCodigo.Text.IndexOf(vbCrLf) > -1 Then
+            retorno = vbCrLf
+        ElseIf richTextBoxCodigo.Text.IndexOf(vbCr) > -1 Then
+            retorno = vbCr
+        ElseIf richTextBoxCodigo.Text.IndexOf(vblf) > -1 Then
+            retorno = vbLf
+        End If
+        Dim lin = richTextBoxCodigo.Text.Split(retorno).Length
         richTextBoxtFilas.Text = ""
         For i = 1 To lin
-            richTextBoxtFilas.Text &= i.ToString("0").PadLeft(4) & vbCrLf
+            richTextBoxtFilas.Text &= i.ToString("0").PadLeft(4) & retorno
         Next
         ' Sincronizar los scrolls
         RichTextBox_VScroll(Nothing, Nothing)
@@ -684,7 +723,10 @@ Public Class Form1
     ''' Guardar los datos de configuración
     ''' </summary>
     Private Sub GuardarConfig()
-        Dim cfg = New gsColorearNET.Config(ficheroConfiguracion)
+        Dim cfg = New Config(ficheroConfiguracion)
+
+        ' La fecha del último aviso                                 (25/Oct/20)
+        cfg.SetValue("Obsoleto", "Ultimo aviso", FechaDelAviso.ToString("dd/MM/yyyy"))
 
         ' Si cargarUltimo es falso no guardar el último fichero     (16/Sep/20)
         cfg.SetValue("Ficheros", "CargarUltimo", cargarUltimo)
@@ -748,7 +790,11 @@ Public Class Form1
     ''' y asignar los valores usados anteriormente.
     ''' </summary>
     Private Sub LeerConfig()
-        Dim cfg = New gsColorearNET.Config(ficheroConfiguracion)
+        Dim cfg = New Config(ficheroConfiguracion)
+
+        Dim d = New Date(1900, 1, 1)
+        Date.TryParse(cfg.GetValue("Obsoleto", "Ultimo aviso", "01/01/1900"), d)
+        FechaDelAviso = d
 
         ' Si cargarUltimo es falso no asignar el último fichero     (16/Sep/20)
         cargarUltimo = cfg.GetValue("Ficheros", "CargarUltimo", False)
@@ -766,8 +812,8 @@ Public Class Form1
         colorearAlCargar = cfg.GetValue("Herramientas", "Colorear", False)
 
         ' El nombre y tamaño de la fuente                           (11/Sep/20)
-        fuenteNombre = cfg.GetValue("Fuente", "Nombre", gsCol.FuentePre)
-        fuenteTamaño = cfg.GetValue("Fuente", "Tamaño", gsCol.FuenteTamPre)
+        fuenteNombre = cfg.GetValue("Fuente", "Nombre", "Consolas")
+        fuenteTamaño = cfg.GetValue("Fuente", "Tamaño", "11")
         labelFuente.Text = $"{fuenteNombre}; {fuenteTamaño}"
 
         comboFuenteNombre.Text = fuenteNombre
@@ -780,8 +826,22 @@ Public Class Form1
         tamForm.H = cfg.GetValue("Ventana", "Height", -1)
         tamForm.W = cfg.GetValue("Ventana", "Width", -1)
 
-        If tamForm.L <> -1 Then Me.Left = tamForm.L
-        If tamForm.T <> -1 Then Me.Top = tamForm.T
+        ' Comprobar si el formulario está en el área visible        (25/Oct/20)
+
+        If tamForm.L <> -1 Then
+            If Screen.PrimaryScreen.WorkingArea.Left < tamForm.L Then
+                Me.Left = tamForm.L
+            Else
+                Me.Left = 0
+            End If
+        End If
+        If tamForm.T <> -1 Then
+            If Screen.PrimaryScreen.WorkingArea.Top < tamForm.T Then
+                Me.Top = tamForm.T
+            Else
+                Me.Top = 0
+            End If
+        End If
         If tamForm.H > -1 Then Me.Height = tamForm.H
         If tamForm.W > -1 Then Me.Width = tamForm.W
 
@@ -897,8 +957,16 @@ Public Class Form1
     ''' </summary>
     Private Sub ColorearCodigo()
         Dim temp = TextoModificado
-        Dim codigo = richTextBoxCodigo.Text
 
+        ' De esta forma no hace siempre bien el coloreado           (22/Sep/20)
+        ' algunas veces mete líneas de más no hace bien las separaciones de líneas... etc.
+        'inicializando = True
+        'Colorear(richTextBoxCodigo.Text, richTextBoxCodigo, comboLenguajes.Text)
+        'richTextBoxCodigo.SelectionStart = 0
+        'richTextBoxCodigo.SelectionLength = 0
+        'inicializando = False
+
+        Dim codigo = richTextBoxCodigo.Text
         ' Llamar directamente a gsColorear
         ' Le he puesto que use la fuente de la configuración,
         '   que NO asigne el CASE adecuado a las palabras claves,
@@ -977,7 +1045,7 @@ Public Class Form1
     ''' </summary>
     ''' <param name="fic">El path completo del fichero a guardar</param>
     Private Sub Guardar(fic As String)
-        labelInfo.Text = $"Guardando {nombreUltimoFichero}..."
+        labelInfo.Text = $"Guardando {fic}..."
 
         Dim sCodigo = richTextBoxCodigo.Text
         Using sw As New StreamWriter(fic, append:=False, encoding:=Encoding.UTF8)
@@ -1054,6 +1122,7 @@ Public Class Form1
                 comboLenguajes.Text = "dotnet"
             End If
         End If
+        buttonLenguaje.Text = comboLenguajes.Text
 
         labelInfo.Text = $"{Path.GetFileName(fic)} ({Path.GetDirectoryName(fic)})"
         labelTamaño.Text = $"{richTextBoxCodigo.Text.Length:#,##0} car."
@@ -1071,7 +1140,7 @@ Public Class Form1
     ''' Muestra la ventana informativa sobre esta utilidad
     ''' y las DLL que utiliza
     ''' </summary>
-    Private Sub AcercaDe_Click(sender As Object, e As EventArgs)
+    Private Sub AcercaDe()
         ' Añadir la versión de esta utilidad                        (15/Sep/20)
         Dim ensamblado As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly
         Dim fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(ensamblado.Location)
@@ -1104,14 +1173,24 @@ Public Class Form1
 
         Dim descL = "Utilidad para .NET 5.0 (.NET Core) para mostrar código en VB o C#, colorearlo y compilarlo."
 
-        MessageBox.Show($"{producto} v{vers} ({fvi.FileVersion})" & vbCrLf & vbCrLf &
-                        $"{descL}" & vbCrLf &
-                        $"{desc}" & vbCrLf & vbCrLf &
-                        "Usando las DLL externas:" & vbCrLf &
-                        verColorear & vbCrLf & vbCrLf &
-                        verCompilar,
-                        $"Acerca de {producto}",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Dim descObsoleto = $"{vbCrLf}{vbCrLf}Esta utilidad está obsoleta, te recomiendo que utilices gsEvaluarColorearCodigoNET.{vbCrLf}"
+        descObsoleto &= $"Puedes descargar el código desde github{vbCrLf}{vbCrLf}¿Quieres ir a github/.../gsEvaluarColorearCodigoNET?"
+
+        If MessageBox.Show($"{producto} v{vers} ({fvi.FileVersion})" & vbCrLf & vbCrLf &
+                           $"{descL}" & vbCrLf & vbCrLf &
+                           $"{desc}" & vbCrLf & vbCrLf &
+                           "Usando las DLL externas:" & vbCrLf &
+                           verColorear & vbCrLf & vbCrLf &
+                           verCompilar & descObsoleto,
+                           $"Acerca de {producto}",
+                           MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then
+            Dim p As New Process
+            p.StartInfo.UseShellExecute = True
+            p.StartInfo.FileName = "https://github.com/elGuille-info/gsEvaluarColorearCodigoNET/"
+            'p.StartInfo.Arguments = "elGuille-info/gsEvaluarColorearCodigoNET/"
+            'Process.Start("https://www.github.com/", "elGuille-info/gsEvaluarColorearCodigoNET/")
+            p.Start()
+        End If
     End Sub
 
     Private Sub RichTextBoxCodigo_KeyDown(sender As Object, e As KeyEventArgs)

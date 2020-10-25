@@ -7,6 +7,19 @@
 ' https://laurentkempe.com/2019/02/18/dynamically-compile-and-run-code-using-dotNET-Core-3.0/
 '
 '
+'v1.0.0.2   17/Sep/20   Falla si el path de la DLL a ejecutar contiene espacios.
+'                       El paquete de NuGet lo sincronizo con la versión revisada (FileVersion).
+'v1.0.0.3   19/Sep/20   Se pueden indicar las versiones del lenguaje para compilar.
+'                       La versión predeterminada es Default. Que es la última versión soportada.
+'                       En VB Latest o Default para la última versión (16.0).
+'                       En C# Latest (8.0) o Default o Preview para 9.0.
+'v1.0.0.4   21/Sep/20   Cambio las versiones de json para aplicaciones de 
+'                       WinForms a 5.0.0-rc.1.20452.2
+'                       Consola  a 5.0.0-rc.1.20451.14
+'v1.0.0.5   25/Oct/20   Cambio las versiones de json para usar .NET 5.0 RC2
+'                       WinForms: 5.0.0-rc.2.20475.6, Consola: 5.0.0-rc.2.20475.5
+'
+'
 ' (c) Guillermo (elGuille) Som, 2020
 '------------------------------------------------------------------------------
 Option Strict On
@@ -146,7 +159,7 @@ Public Class Compilar
     ''' Ejecuta (si así se indica) el ensamblado generado.
     ''' Devuelve una cadena vacía si hubo error.
     ''' </summary>
-    Public Shared Function CompilarGuardar(ByVal file As String, ByVal Optional run As Boolean = True) As String
+    Public Shared Function CompilarGuardar(file As String, Optional run As Boolean = True) As String
         Dim compiler = New Compiler()
 
         Dim outputExe = compiler.CompileAsFile(file)
@@ -163,6 +176,8 @@ Public Class Compilar
             ' Aplicación de escritorio (Windows Forms)
             ' Microsoft.WindowsDesktop.App
             ' 5.0.0-preview.8.20411.6
+            ' 5.0.0-rc.1.20452.2
+            ' 5.0.0-rc.2.20475.6
             jsonText = "
 {
     ""runtimeOptions"": {
@@ -178,6 +193,8 @@ Public Class Compilar
             ' Tipo consola
             ' Microsoft.NETCore.App
             ' 5.0.0-preview.8.20407.11
+            ' 5.0.0-rc.1.20451.14
+            ' 5.0.0-rc.2.20475.5
             jsonText = "
 {
     ""runtimeOptions"": {

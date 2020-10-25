@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -9,12 +9,12 @@
 
     <Version>1.0.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.13</FileVersion>
+    <FileVersion>1.0.0.20</FileVersion>
     <Authors>Guillermo Som (Guille)</Authors>
     <Company>elGuille</Company>
     <Description>Utilidad para colorear código (de VB o C#), compilarlo y ejecutarlo desde la aplicación.
 Tanto para aplicaciones de consola como de Windows Forms.
-(para .NET 5.0 revisión del 19/Sep/2020)</Description>
+(para .NET 5.0 RC2 revisión del 25/Oct/2020)</Description>
     <Copyright>Copyright © Guillermo Som (Guille), 2020</Copyright>
     <ApplicationIcon>VSProject_genericproject.Office_Deve.ico</ApplicationIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -23,18 +23,22 @@ Tanto para aplicaciones de consola como de Windows Forms.
     <PackageIcon>gsCompilarEjecutarNET.jpg</PackageIcon>
     <PackageTags>visual-basic dotnet dotnet-core WinForms gsColorearNET gsCompilarNET</PackageTags>
     <NeutralLanguage>es-es</NeutralLanguage>
-    <PackageReleaseNotes>v1.0.0.13 Añado un menú contextual al editor de código con los comandos de edición.
-v1.0.0.12 Se puede indicar la versión de los lenguajes. Se usa Latest para VB y Default (9.0) para C#.
-v1.0.0.11 Nueva opción para compilar sin ejecutar y otras mejoras visuales.
-v1.0.0.10 Con panel para buscar y reemplazar y funciones para buscar, buscar siguiente, reemplazar y reemplazar todos. También en el menú de edición están las 5 opciones.
-v1.0.0.9 Opciones de Buscar y Reemplazar.
-Pongo WordWrap del RichTextBox a false para que no corte las líneas.</PackageReleaseNotes>
-
+    <PackageReleaseNotes>v1.0.0.20 Avisar cada día... ¡hasta que se cambien! ;-)
+v1.0.0.19 La primera vez que se inicia se muestra el aviso.
+v1.0.0.18 Recomendación de usar gsEvaluarColorearCodigoNET.
+v1.0.0.17 Mostrar los números de líneas. No se mostraba por culpa del tipo de retorno de línea.
+Hago comprobación del tipo de retorno de carro (línea) tiene el texto.
+v1.0.0.16 Comprobación de si la posición guardada del formulario está en el área visible.
+v1.0.0.15 Uso .NET 5.0 RC2 y las actualizaciones de gsColorearNET y gsCompilarNET.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>CompilarCore=0</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\clases compartidas\Config.vb" Link="Utilidades\Config.vb" />
+  </ItemGroup>
 
   <ItemGroup>
     <Import Include="System.Data" />
@@ -55,6 +59,14 @@ Pongo WordWrap del RichTextBox a false para que no corte las líneas.</PackageRe
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.8.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="My Project\Resources.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -68,6 +80,10 @@ Pongo WordWrap del RichTextBox a false para que no corte las líneas.</PackageRe
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Utilidades\" />
   </ItemGroup>
 
 </Project>
