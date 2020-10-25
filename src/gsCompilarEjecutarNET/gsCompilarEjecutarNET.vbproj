@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>gsCompilarEjecutarNET</RootNamespace>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>gsCompilarEjecutarNET.Form1</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
 
     <Version>1.0.0.0</Version>
@@ -30,6 +30,7 @@ v1.0.0.17 Mostrar los números de líneas. No se mostraba por culpa del tipo de 
 Hago comprobación del tipo de retorno de carro (línea) tiene el texto.
 v1.0.0.16 Comprobación de si la posición guardada del formulario está en el área visible.
 v1.0.0.15 Uso .NET 5.0 RC2 y las actualizaciones de gsColorearNET y gsCompilarNET.</PackageReleaseNotes>
+    <MyType>WindowsForms</MyType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -67,6 +68,11 @@ v1.0.0.15 Uso .NET 5.0 RC2 y las actualizaciones de gsColorearNET y gsCompilarNE
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="My Project\Application.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
     <Compile Update="My Project\Resources.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -84,6 +90,13 @@ v1.0.0.15 Uso .NET 5.0 RC2 y las actualizaciones de gsColorearNET y gsCompilarNE
 
   <ItemGroup>
     <Folder Include="Utilidades\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
